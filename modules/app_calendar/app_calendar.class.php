@@ -401,6 +401,9 @@ function usual(&$out) {
    global $location_id;
    $rec['LOCATION_ID']=(int)$location_id;
 
+   global $calendar_category_id;
+   $rec['CALENDAR_CATEGORY_ID']=(int)$calendar_category_id;
+
    global $done_script_id;
    $rec['DONE_SCRIPT_ID']=(int)$done_script_id;
 
@@ -425,7 +428,7 @@ function usual(&$out) {
   $out['USERS']=SQLSelect("SELECT * FROM users ORDER BY NAME");
   $out['LOCATIONS']=SQLSelect("SELECT * FROM gpslocations ORDER BY TITLE");
   $out['SCRIPTS']=SQLSelect("SELECT ID, TITLE FROM scripts ORDER BY TITLE");
-
+  $out['CALENDAR_CATEGORIES']=SQLSelect("SELECT ID, TITLE from calendar_categories ORDER BY TITLE");
  }
 
 /**
