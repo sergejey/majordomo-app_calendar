@@ -1,5 +1,5 @@
 <form action="?" method="get">
-<table border="0" align="center">
+<table style="margin-top: 30px;" border="0" align="center">
  <tr>
   <td valign="top"><input type="text" name="title" size="40"  class="form-control"></td>
   <td valign="top">&nbsp;</td>
@@ -10,26 +10,26 @@
 </form>
 
 [#if EVENTS_PAST#]
-<h1><#LANG_PAST_DUE#></h1>
+<h1 style="color: red; padding-top: 30px; font-size: 22px;"><#LANG_PAST_DUE#></h1>
 <table border="0">
  [#begin EVENTS_PAST#]
  <tr>
-  <td>[#if IS_TASK="1"#]<input type="checkbox" name="task[#ID#]" class="tasks" value="[#ID#]" data-role="none">[#else#]&nbsp;[#endif#]</td>
-  <td width="90%"><span id="task_title[#ID#]">[#TITLE#]</span> ([#AGE#])</td>
-  <td><a href="?view_mode=edit&id=[#ID#]"><#LANG_EDIT#></a></td>
+  <td>[#if IS_TASK="1"#]<a href="?view_mode=edit&id=[#ID#]"><img style="height: 25px;" src="/img/app_calendar/task.svg"></a>[#else#]<a href="?view_mode=edit&id=[#ID#]"><img style="height: 25px;" src="/img/app_calendar/opovejanie.svg"></a>[#endif#]</td>
+  <td width="100%"><span id="task_title[#ID#]">[#TITLE#] (прошло [#AGE#] дня)</span> [#if NOTES=""#][#else#]<span style="color: grey; font-style: italic;"> — [#NOTES#]</span>[#endif#] [#if IS_TASK="1"#] <input type="checkbox" name="task[#ID#]" class="tasks" value="[#ID#]" data-role="none">[#endif#]</td>
+  <!--td><a style="font-size: 13px;" href="?view_mode=edit&id=[#ID#]"><#LANG_EDIT#></a></td-->
  </tr>
  [#end EVENTS_PAST#]
 </table>
 [#endif EVENTS_PAST#]
 
-<h1><#LANG_TODAY#></h1>
+<h1 style="padding-top: 30px; font-size: 22px;"><#LANG_TODAY#></h1>
 <table border="0">
  [#if EVENTS_TODAY#]
  [#begin EVENTS_TODAY#]
  <tr>
-  <td valign="top">[#if IS_TASK="1"#]<input type="checkbox" name="task[#ID#]" class="tasks" value="[#ID#]" data-role="none">[#else#]&nbsp;[#endif#]</td>
-  <td width="90%"><span id="task_title[#ID#]">[#TITLE#]</span></td>
-  <td><a href="?view_mode=edit&id=[#ID#]"><#LANG_EDIT#></a></td>
+  <td valign="top">[#if IS_TASK="1"#]<a href="?view_mode=edit&id=[#ID#]"><img style="height: 25px;" src="/img/app_calendar/task.svg"></a>[#else#]<a href="?view_mode=edit&id=[#ID#]"><img style="height: 25px;" src="/img/app_calendar/opovejanie.svg"></a>[#endif#]</td>
+  <td width="100%"><span id="task_title[#ID#]">[#TITLE#] [#if NOTES=""#][#else#]<span style="color: grey; font-style: italic;">  [#NOTES#]</span>[#endif#]</span>[#if IS_TASK="1"#] <input type="checkbox" name="task[#ID#]" class="tasks" value="[#ID#]" data-role="none">[#endif#]</td>
+  <!--td><a style="font-size: 13px;" href="?view_mode=edit&id=[#ID#]"><#LANG_EDIT#></a></td-->
  </tr>
  [#end EVENTS_TODAY#]
  [#else EVENTS_TODAY#]
@@ -40,29 +40,31 @@
 </table>
 
 [#if EVENTS_SOON#]
-<h1><#LANG_SOON#></h1>
+<h1 style="color: red; padding-top: 30px; font-size: 22px;"><#LANG_SOON#></h1>
 <table border="0">
  [#begin EVENTS_SOON#]
  <tr>
-  <td>[#if IS_TASK="1"#]<input type="checkbox" name="task[#ID#]" class="tasks" value="[#ID#]" data-role="none">[#else#]&nbsp;[#endif#]</td>
-  <td width="90%"><span id="task_title[#ID#]">[#TITLE#]</span> ([#AGE#])</td>
-  <td><a href="?view_mode=edit&id=[#ID#]"><#LANG_EDIT#></a></td>
+  <td>[#if IS_TASK="1"#]<a href="?view_mode=edit&id=[#ID#]"><img style="height: 25px;" src="/img/app_calendar/task.svg"></a>[#else#]<a href="?view_mode=edit&id=[#ID#]"><img style="height: 25px;" src="/img/app_calendar/opovejanie.svg"></a>[#endif#]</td>
+  <td width="100%"><span id="task_title[#ID#]">[#TITLE#] (через [#AGE#] дня)</span> [#if NOTES=""#][#else#]<span style="color: grey; font-style: italic;">  [#NOTES#]</span>[#endif#] [#if IS_TASK="1"#] <input type="checkbox" name="task[#ID#]" class="tasks" value="[#ID#]" data-role="none">[#endif#]</td>
+  <!--td><a style="font-size: 13px;" href="?view_mode=edit&id=[#ID#]"><#LANG_EDIT#></a></td-->
  </tr>
  [#end EVENTS_SOON#]
 </table>
 [#endif EVENTS_SOON#]
 
 [#if RECENTLY_DONE#]
-<h1><#LANG_DONE_RECENTLY#></h1>
+<h1 style="color: green; padding-top: 30px; font-size: 22px;"><#LANG_DONE_RECENTLY#></h1>
 <table border="0">
  [#begin RECENTLY_DONE#]
  <tr>
-  <td width="90%"><span id="task_title[#ID#]" style="text-decoration:line-through">[#TITLE#]</span></td>
-  <td><a href="?view_mode=edit&id=[#ID#]"><#LANG_EDIT#></a></td>
+  <td>[#if IS_TASK="1"#]<a href="?view_mode=edit&id=[#ID#]"><img style="height: 25px;" src="/img/app_calendar/task.svg"></a>[#else#]<a href="?view_mode=edit&id=[#ID#]"><img style="height: 25px;" src="/img/app_calendar/opovejanie.svg"></a>[#endif#]</td>
+  <td width="100%"><span id="task_title[#ID#]" style="text-decoration:line-through">[#TITLE#]</span></td>
+  <!--td><a style="font-size: 13px;" href="?view_mode=edit&id=[#ID#]"><#LANG_EDIT#></a></td-->
  </tr>
  [#end RECENTLY_DONE#]
 </table>
 [#endif RECENTLY_DONE#]
+
 
 <script language="javascript">
  $('.tasks').click (function ()

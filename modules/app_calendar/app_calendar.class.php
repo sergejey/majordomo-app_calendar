@@ -271,6 +271,11 @@ function usual(&$out) {
    $out['EVENTS_PAST']=$events_past;
   }
 
+  $events_pastpPan=SQLSelect("SELECT *, (TO_DAYS(DUE)-TO_DAYS(NOW())) as AGE FROM calendar_events WHERE (TO_DAYS(DUE)>TO_DAYS(NOW()) AND (TO_DAYS(DUE)-TO_DAYS(NOW())<='3') AND IS_DONE='0') ORDER BY AGE");
+  if ($events_pastpPan) {
+   $out['EVENTS_PASTPLAN']=$events_pastpPan;
+  }
+
   $how_soon=SETTINGS_APP_CALENDAR_SOONLIMIT;
   $events_soon=SQLSelect("SELECT *, (TO_DAYS(DUE)-TO_DAYS(NOW())) as AGE FROM calendar_events WHERE IS_TASK=0 AND (TO_DAYS(DUE)>TO_DAYS(NOW()) AND (TO_DAYS(DUE)-TO_DAYS(NOW())<=".(int)$how_soon.")) ORDER BY AGE");
 
@@ -401,6 +406,9 @@ function usual(&$out) {
    global $location_id;
    $rec['LOCATION_ID']=(int)$location_id;
 
+   global $calendar_category_id;
+   $rec['CALENDAR_CATEGORY_ID']=(int)$calendar_category_id;
+
    global $done_script_id;
    $rec['DONE_SCRIPT_ID']=(int)$done_script_id;
 
@@ -425,7 +433,7 @@ function usual(&$out) {
   $out['USERS']=SQLSelect("SELECT * FROM users ORDER BY NAME");
   $out['LOCATIONS']=SQLSelect("SELECT * FROM gpslocations ORDER BY TITLE");
   $out['SCRIPTS']=SQLSelect("SELECT ID, TITLE FROM scripts ORDER BY TITLE");
-
+  $out['CALENDAR_CATEGORIES']=SQLSelect("SELECT ID, TITLE from calendar_categories ORDER BY TITLE");
  }
 
 /**
