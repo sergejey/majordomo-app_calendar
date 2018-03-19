@@ -1,0 +1,55 @@
+<br>
+<a href="?view_mode=edit_calendar_categories&data_source=<#DATA_SOURCE#>" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i> <#LANG_ADD_NEW_RECORD#></a>
+
+<br><br>
+<table width=100% border=0><tr>
+<td valign=top>
+<!-- results -->
+[#if RESULT#]
+<!-- search results (list) -->
+<form action="?" method="post" name="frmList_calendar_categories" style="padding:0px">
+<table class="table table-striped">
+[#begin RESULT#]
+<tr>
+ <td
+  >
+  <b>
+   [#TITLE#]
+  </a></b>
+ </td>
+ <td width="300">
+ 
+  [#if "<#ACTION#>"=="admin"#]
+  
+    <b><a  class="btn btn-default btn-sm" href="?data_source=<#DATA_SOURCE#>&view_mode=edit_calendar_categories&id=[#ID#]" title="<#LANG_EDIT#>"><i class="glyphicon glyphicon-pencil"></i></a></b>
+  
+    <b><a  class="btn btn-default btn-sm" href="?data_source=<#DATA_SOURCE#>&view_mode=edit_calendar_categories&parent_id=[#ID#]" title="<#LANG_EXPAND#>"><i class="glyphicon glyphicon-save"></i></a>
+   
+  [#if !RESULT#]
+
+    <a  class="btn btn-default btn-sm" href="?data_source=<#DATA_SOURCE#>&view_mode=delete_calendar_categories&id=[#ID#]" onClick="return confirm('<#LANG_ARE_YOU_SURE#>')" title="<#LANG_DELETE#>"><i class="glyphicon glyphicon-remove"></i></a>
+  
+  [#endif RESULT#]
+  [#endif ACTION#]
+ </td>
+</tr>
+[#if RESULT#]
+ <tr><td colspan=100 style="padding-left:20px" bgcolor="#FFFFFF">
+  <table  class="table table-striped">
+   [#tree RESULT#]
+  </table>
+ </td></tr>
+[#endif RESULT#]
+[#end RESULT#]
+</table>
+<input type="hidden" name="data_source" value="<#DATA_SOURCE#>">
+<input type="hidden" name="view_mode" value="multiple_calendar_categories">
+</form>
+<!-- / search results (list) -->
+[#else RESULT#]
+<p align=center>
+<font color="red"><#LANG_NO_RECORDS_FOUND#></font>
+</p>
+[#endif RESULT#]
+<!-- / results -->
+</td></tr></table>

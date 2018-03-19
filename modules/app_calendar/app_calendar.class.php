@@ -179,7 +179,8 @@ function admin(&$out) {
    $this->search_calendar_events($out);
   }
   if ($this->view_mode=='edit_calendar_events') {
-   $this->edit_calendar_events($out, $this->id);
+//   $this->edit_calendar_events($out, $this->id);
+     $this->usual_edit($out, $this->id);
   }
   if ($this->view_mode=='delete_calendar_events') {
    $this->delete_calendar_events($this->id);
@@ -234,62 +235,87 @@ function usual(&$out) {
   }
 
 
-  $events_today=SQLSelect("SELECT * FROM calendar_events WHERE TO_DAYS(DUE)=TO_DAYS(NOW()) AND IS_REPEATING!=1 AND IS_TASK=0 ORDER BY IS_TASK DESC");
-  $tasks_today=SQLSelect("SELECT * FROM calendar_events WHERE TO_DAYS(DUE)=TO_DAYS(NOW()) AND IS_DONE=0 AND IS_TASK=1 ORDER BY IS_TASK DESC");
+  $calendar_categories=SQLSelect("SELECT ID,TITLE FROM calendar_categories");
+  $calendar_categories[]=array(ID=>0,TITLE=>'Без категории');
+
+  foreach($calendar_categories as $k1=>$v1) {
+  $events_today_temp=SQLSelect("SELECT * FROM calendar_events WHERE TO_DAYS(DUE)=TO_DAYS(NOW()) AND IS_REPEATING!=1 AND IS_TASK=0 and CALENDAR_CATEGORY_ID=" . $v1['ID'] . " ORDER BY IS_TASK DESC");
+  if ($events_today_temp) {
+   foreach($events_today_temp as $k=>$v) {
+  //  $events_today[]=$v;
+    $calendar_categories[$k1]['EVENTS_TODAY'][]=$v;
+   }
+  }
+
+  $tasks_today=SQLSelect("SELECT * FROM calendar_events WHERE TO_DAYS(DUE)=TO_DAYS(NOW()) AND IS_DONE=0 AND IS_TASK=1 and CALENDAR_CATEGORY_ID=" . $v1['ID'] . " ORDER BY IS_TASK DESC");
   if ($tasks_today) {
    foreach($tasks_today as $k=>$v) {
-    $events_today[]=$v;
+  //  $events_today[]=$v;
+    $calendar_categories[$k1]['EVENTS_TODAY'][]=$v;
    }
   }
 
 
-  $events_early_today=SQLSelect("SELECT * FROM calendar_events WHERE TO_DAYS(DATE(CONCAT_WS('-', DATE_FORMAT(NOW(), '%Y'), DATE_FORMAT(DUE, '%m'), DATE_FORMAT(DUE, '%d'))))=TO_DAYS(NOW()) AND IS_REPEATING=1 AND REPEAT_TYPE=1 ORDER BY IS_TASK DESC");
+  $events_early_today=SQLSelect("SELECT * FROM calendar_events WHERE TO_DAYS(DATE(CONCAT_WS('-', DATE_FORMAT(NOW(), '%Y'), DATE_FORMAT(DUE, '%m'), DATE_FORMAT(DUE, '%d'))))=TO_DAYS(NOW()) AND IS_REPEATING=1 AND REPEAT_TYPE=1 and CALENDAR_CATEGORY_ID=" . $v1['ID'] . " ORDER BY IS_TASK DESC");
   if ($events_early_today) {
    foreach($events_early_today as $k=>$v) {
-    $events_today[]=$v;
+   // $events_today[]=$v;
+    $calendar_categories[$k1]['EVENTS_TODAY'][]=$v;
    }
   }
-  $events_monthly_today=SQLSelect("SELECT * FROM calendar_events WHERE TO_DAYS(DATE(CONCAT_WS('-', DATE_FORMAT(NOW(), '%Y'), DATE_FORMAT(NOW(), '%m'), DATE_FORMAT(DUE, '%d'))))=TO_DAYS(NOW()) AND IS_REPEATING=1 AND REPEAT_TYPE=2 ORDER BY IS_TASK DESC");
+
+  $events_monthly_today=SQLSelect("SELECT * FROM calendar_events WHERE TO_DAYS(DATE(CONCAT_WS('-', DATE_FORMAT(NOW(), '%Y'), DATE_FORMAT(NOW(), '%m'), DATE_FORMAT(DUE, '%d'))))=TO_DAYS(NOW()) AND IS_REPEATING=1 AND REPEAT_TYPE=2 and CALENDAR_CATEGORY_ID=" . $v1['ID'] . " ORDER BY IS_TASK DESC");
   if ($events_monthly_today) {
    foreach($events_monthly_today as $k=>$v) {
-    $events_today[]=$v;
+  //  $events_today[]=$v;
+    $calendar_categories[$k1]['EVENTS_TODAY'][]=$v;
    }
   }
-  $events_weekly_today=SQLSelect("SELECT * FROM calendar_events WHERE DATE_FORMAT(DUE, '%w')=DATE_FORMAT(NOW(), '%w') AND IS_REPEATING=1 AND REPEAT_TYPE=3 ORDER BY IS_TASK DESC");
+
+  $events_weekly_today=SQLSelect("SELECT * FROM calendar_events WHERE DATE_FORMAT(DUE, '%w')=DATE_FORMAT(NOW(), '%w') AND IS_REPEATING=1 AND REPEAT_TYPE=3 and CALENDAR_CATEGORY_ID=" . $v1['ID'] . " ORDER BY IS_TASK DESC");
   if ($events_weekly_today) {
    foreach($events_weekly_today as $k=>$v) {
-    $events_today[]=$v;
+   // $events_today[]=$v;
+    $calendar_categories[$k1]['EVENTS_TODAY'][]=$v;
    }
   }
 
-  if ($events_today) {
-   $out['EVENTS_TODAY']=$events_today;
-  }
+  //if ($events_today) {
+  // $out['EVENTS_TODAY']=$events_today;
+  //}
 
-  $events_past=SQLSelect("SELECT *, (TO_DAYS(DUE)-TO_DAYS(NOW())) as AGE FROM calendar_events WHERE TO_DAYS(DUE)<TO_DAYS(NOW()) AND IS_TASK=1 AND IS_DONE=0 ORDER BY IS_TASK DESC, AGE");
+  $events_past=SQLSelect("SELECT *, (TO_DAYS(DUE)-TO_DAYS(NOW())) as AGE FROM calendar_events WHERE TO_DAYS(DUE)<TO_DAYS(NOW()) AND IS_TASK=1 AND IS_DONE=0 and CALENDAR_CATEGORY_ID=" . $v1['ID'] . " ORDER BY IS_TASK DESC, AGE");
   if ($events_past) {
-   $out['EVENTS_PAST']=$events_past;
+   foreach($events_past as $k=>$v) {
+    $calendar_categories[$k1]['EVENTS_PAST'][]=$v;
+   }
+   //$out['EVENTS_PAST']=$events_past;
   }
 
   $events_pastpPan=SQLSelect("SELECT *, (TO_DAYS(DUE)-TO_DAYS(NOW())) as AGE FROM calendar_events WHERE (TO_DAYS(DUE)>TO_DAYS(NOW()) AND (TO_DAYS(DUE)-TO_DAYS(NOW())<='3') AND IS_DONE='0') ORDER BY AGE");
   if ($events_pastpPan) {
-   $out['EVENTS_PASTPLAN']=$events_pastpPan;
+   foreach($events_pastpPan as $k=>$v) {
+    $calendar_categories[$k1]['EVENTS_PAST'][]=$v;
+   }
+   //$out['EVENTS_PASTPLAN']=$events_pastpPan;
   }
 
   $how_soon=SETTINGS_APP_CALENDAR_SOONLIMIT;
-  $events_soon=SQLSelect("SELECT *, (TO_DAYS(DUE)-TO_DAYS(NOW())) as AGE FROM calendar_events WHERE IS_TASK=0 AND (TO_DAYS(DUE)>TO_DAYS(NOW()) AND (TO_DAYS(DUE)-TO_DAYS(NOW())<=".(int)$how_soon.")) ORDER BY AGE");
+  $events_soon=SQLSelect("SELECT *, (TO_DAYS(DUE)-TO_DAYS(NOW())) as AGE FROM calendar_events WHERE IS_TASK=0 AND (TO_DAYS(DUE)>TO_DAYS(NOW()) AND (TO_DAYS(DUE)-TO_DAYS(NOW())<=".(int)$how_soon.")) and CALENDAR_CATEGORY_ID=" . $v1['ID'] . " ORDER BY AGE");
 
-  $tasks_soon=SQLSelect("SELECT *, (TO_DAYS(DUE)-TO_DAYS(NOW())) as AGE FROM calendar_events WHERE IS_TASK=1 AND IS_DONE=0 AND (TO_DAYS(DUE)>TO_DAYS(NOW()) OR (IS_NODATE=1)) ORDER BY AGE");
+  $tasks_soon=SQLSelect("SELECT *, (TO_DAYS(DUE)-TO_DAYS(NOW())) as AGE FROM calendar_events WHERE IS_TASK=1 AND IS_DONE=0 AND (TO_DAYS(DUE)>TO_DAYS(NOW()) OR (IS_NODATE=1)) and CALENDAR_CATEGORY_ID=" . $v1['ID'] . " ORDER BY AGE");
   if ($tasks_soon) {
    foreach($tasks_soon as $k=>$v) {
-    $events_soon[]=$v;
+ //   $events_soon[]=$v;
+    $calendar_categories[$k1]['EVENTS_SOON'][]=$v;
    }
   }
 
-  $events_early_soon=SQLSelect("SELECT *, TO_DAYS(DATE(CONCAT_WS('-', DATE_FORMAT(NOW(), '%Y'), DATE_FORMAT(DUE, '%m'), DATE_FORMAT(DUE, '%d'))))-TO_DAYS(NOW()) as AGE FROM calendar_events WHERE (TO_DAYS(DATE(CONCAT_WS('-', DATE_FORMAT(NOW(), '%Y'), DATE_FORMAT(DUE, '%m'), DATE_FORMAT(DUE, '%d'))))>TO_DAYS(NOW())) AND (TO_DAYS(DATE(CONCAT_WS('-', DATE_FORMAT(NOW(), '%Y'), DATE_FORMAT(DUE, '%m'), DATE_FORMAT(DUE, '%d'))))-TO_DAYS(NOW())<=".(int)$how_soon.") AND IS_REPEATING=1 AND REPEAT_TYPE=1 AND IS_TASK=0 ORDER BY DUE");
+  $events_early_soon=SQLSelect("SELECT *, TO_DAYS(DATE(CONCAT_WS('-', DATE_FORMAT(NOW(), '%Y'), DATE_FORMAT(DUE, '%m'), DATE_FORMAT(DUE, '%d'))))-TO_DAYS(NOW()) as AGE FROM calendar_events WHERE (TO_DAYS(DATE(CONCAT_WS('-', DATE_FORMAT(NOW(), '%Y'), DATE_FORMAT(DUE, '%m'), DATE_FORMAT(DUE, '%d'))))>TO_DAYS(NOW())) AND (TO_DAYS(DATE(CONCAT_WS('-', DATE_FORMAT(NOW(), '%Y'), DATE_FORMAT(DUE, '%m'), DATE_FORMAT(DUE, '%d'))))-TO_DAYS(NOW())<=".(int)$how_soon.") AND IS_REPEATING=1 AND REPEAT_TYPE=1 AND IS_TASK=0 and CALENDAR_CATEGORY_ID=" . $v1['ID'] . " ORDER BY DUE");
   if ($events_early_soon) {
    foreach($events_early_soon as $k=>$v) {
-    $events_soon[]=$v;
+    //$events_soon[]=$v;
+    $calendar_categories[$k1]['EVENTS_SOON'][]=$v;
    }
   }
 
@@ -304,20 +330,31 @@ function usual(&$out) {
    $new_events=array();
    foreach($events_soon as $ev) {
     if (!$seen[$ev['ID']]) {
-     $new_events[]=$ev;
+     //$new_events[]=$ev;
+     $calendar_categories[$k1]['EVENTS_SOON'][]=$ev;
     }
     $seen[$ev['ID']]=1;
    }
-   $out['EVENTS_SOON']=$new_events;
+  // $out['EVENTS_SOON']=$new_events;
   }
 
 
   if (SETTINGS_APP_CALENDAR_SHOWDONE=='1') {
-   $recently_done=SQLSelect("SELECT * FROM calendar_events WHERE IS_TASK=1 AND (IS_DONE=1 OR IS_REPEATING=1) AND TO_DAYS(NOW())-TO_DAYS(DONE_WHEN)<=1");
+   $recently_done=SQLSelect("SELECT * FROM calendar_events WHERE IS_TASK=1 AND (IS_DONE=1 OR IS_REPEATING=1) AND TO_DAYS(NOW())-TO_DAYS(DONE_WHEN)<=1 and CALENDAR_CATEGORY_ID=" . $v1['ID'])  ;
    if ($recently_done) {
-   $out['RECENTLY_DONE']=$recently_done;
+    foreach($recently_done as $k=>$v) {
+     $calendar_categories[$k1]['RECENTLY_DONE'][]=$v;
+    }
+   //$out['RECENTLY_DONE']=$recently_done;
    }
   }
+  if (empty($calendar_categories[$k1]['EVENTS_TODAY']) and empty($calendar_categories[$k1]['EVENTS_PAST']) and empty($calendar_categories[$k1]['EVENTS_SOON']) and empty ($calendar_categories[$k1]['RECENTLY_DONE'])) {
+   $calendar_categories[$k1]['REC_COUNT']=0;
+  } else {
+   $calendar_categories[$k1]['REC_COUNT']=1;
+  }
+ }
+  $out['CALENDAR_CATEGORIES']=$calendar_categories;
 
 
  }

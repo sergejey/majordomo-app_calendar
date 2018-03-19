@@ -146,7 +146,8 @@
 
   $out['USER_ID_OPTIONS']=$tmp;
   //options for 'LOCATION_ID' (select)
-  $tmp=SQLSelect("SELECT ID, TITLE FROM gpslocations ORDER BY TITLE");
+//  $tmp=SQLSelect("SELECT ID, TITLE FROM gpslocations ORDER BY TITLE");
+  $tmp=SQLSelect("SELECT ID, TITLE FROM calendar_categories ORDER BY TITLE");
   $gpslocations_total=count($tmp);
   for($gpslocations_i=0;$gpslocations_i<$gpslocations_total;$gpslocations_i++) {
    $location_id_opt[$tmp[$gpslocations_i]['ID']]=$tmp[$gpslocations_i]['TITLE'];
