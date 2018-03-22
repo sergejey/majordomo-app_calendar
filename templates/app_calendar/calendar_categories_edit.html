@@ -35,7 +35,7 @@
  <label class="col-lg-3 control-label"[#if ERR_PRIORITY#] style="color:red;font-weight:bold"[#endif#]>
  <#LANG_IMAGE#>:
  </label>
- <div class="col-lg-4">[#if CAT_IMG!=""#]<img src="<#ROOTHTML#>cms/calendar/image_catcalendar_<#ID#>.jpg" border="0" height="50"><br>[#endif#]<input type="file" class="form-control" name="cat_img" ><br></div>
+ <div class="col-lg-4">[#if ICON!=""#]<img src="<#ROOTHTML#>cms/calendar/<#ICON#>" border="0" height="50"><button type="submit" name="delete_icon" value="delete_icon" class="btn btn-primary">Удалить картинку</button><br>[#endif#]<input type="file" class="form-control" name="icon" ><br></div>
 </div>
 
 <div class="form-group">
@@ -54,4 +54,3 @@
 </div>
 </div>
 </form>
-

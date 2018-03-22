@@ -18,7 +18,7 @@
   }
 
 global $calendar_category_id;
-if ($calendar_category_id) {
+if ($calendar_category_id!="") {
  $out['CALENDAR_CATEGORY_ID']=(int)$calendar_category_id;
  $qry.=" AND calendar_events.CALENDAR_CATEGORY_ID=".$out['CALENDAR_CATEGORY_ID'];
 }
@@ -48,7 +48,7 @@ if ($calendar_category_id) {
   if (!$sortby_calendar_events) $sortby_calendar_events="DUE DESC";
   $out['SORTBY']=$sortby_calendar_events;
   // SEARCH RESULTS
-  $res=SQLSelect("SELECT calendar_events.*,calendar_categories.TITLE as CATEGORY FROM calendar_events inner join calendar_categories ON calendar_events.calendar_category_id=calendar_categories.id WHERE $qry ORDER BY ".$sortby_calendar_events);
+  $res=SQLSelect("SELECT calendar_events.*,calendar_categories.TITLE as CATEGORY FROM calendar_events left join calendar_categories ON calendar_events.calendar_category_id=calendar_categories.id WHERE $qry ORDER BY ".$sortby_calendar_events);
   if ($res[0]['ID']) {
    paging($res, 50, $out); // search result paging
    colorizeArray($res);
@@ -59,6 +59,6 @@ if ($calendar_category_id) {
    }
    $out['RESULT']=$res;
   }
- $categories=SQLSelect("SELECT ID, TITLE FROM calendar_categories ORDER BY TITLE");
+ $categories=SQLSelect("SELECT ID, TITLE FROM calendar_categories ORDER BY PRIORITY DESC,TITLE");
  $out['CATEGORIES']=$categories;
 ?>

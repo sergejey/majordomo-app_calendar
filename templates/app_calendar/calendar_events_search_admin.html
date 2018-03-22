@@ -1,5 +1,7 @@
 <br>
 <a href="?view_mode=edit_calendar_events&data_source=<#DATA_SOURCE#>" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i> <#LANG_ADD_NEW_RECORD#></a>
+<a href="?view_mode=delete_all_task&data_source=<#DATA_SOURCE#>" class="btn btn-default"><i class="glyphicon glyphicon-minus"></i> Удалить все выполненые задачи</a>
+<a href="?view_mode=delete_all_past_events&data_source=<#DATA_SOURCE#>" class="btn btn-default"><i class="glyphicon glyphicon-minus"></i> Удалить все просроченные события</a>
 
 <br><br>
 <form class="form-inline" action="?data_source=<#DATA_SOURCE#>&view_mode=<#VIEW_MODE#>&mode=<#MODE#>" name="frmFilter">
@@ -14,6 +16,7 @@
  <div class="form-group ">
   <select name="calendar_category_id" class="form-control" onchange="this.form.submit();">
    <option value="">Категория
+    <option value="0" [#if CALENDAR_CATEGORY_ID="0"#] selected[#endif#]>Без категории
     [#begin CATEGORIES#]<option value="[#ID#]"[#if ID="<#CALENDAR_CATEGORY_ID#>"#] selected[#endif#]>[#TITLE#]
    [#end CATEGORIES#]
   </select>
@@ -44,7 +47,7 @@
 <form action="?" method="post" name="frmList_calendar_events" style="padding:0px">
 <table class="table table-striped">
 <tr>
-<th>Дата</th><th>Категория</th><th>Описание</th><th>Задача</th><th>Сделано</th><th>Повтор</th>
+<th>Дата</th><th>Категория</th><th>Описание</th><th>Тип</th><th>Сделано</th><th>Повтор</th><th>Опции</th>
 </tr>
 [#begin RESULT#]
 <tr>
@@ -55,7 +58,7 @@
    [#TITLE#]
   </a></b>
  </td>
- [#if IS_TASK=="1"#]<td><img src="/img/icons/status/green_32.png"></td>[#else#]<td></td>[#endif IS_TASK#]
+ [#if IS_TASK=="1"#]<td><img style="height: 25px;" src="../cms/calendar/task.svg"></td>[#else#]<td><img style="height: 25px;" src="../cms/calendar/notification.svg"></td>[#endif IS_TASK#]
  [#if IS_DONE=="1"#]<td><img src="/img/icons/status/green_32.png"></td>[#else#]<td></td>[#endif IS_DONE#]
  [#if IS_REPEATING=="1"#]<td><img src="/img/icons/status/green_32.png"></td>[#else#]<td></td>[#endif IS_REPITING#]</td>
  <td width="300">

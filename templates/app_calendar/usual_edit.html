@@ -1,3 +1,4 @@
+<a style="margin: 15px 0px 5px 15px;" class="btn btn-default" href="?">Назад</a>
 <div style="margin:30px;">
 <form action="?" method="post">
 <table width="100%" border="0">
@@ -8,10 +9,22 @@
   </td>
  </tr>
 
+<tr>
+ <td valign="top">Категория:</td>
+ <td valign="top">
+ <select style="margin-top: 4px;width: auto;" class="form-control" name="calendar_category_id">
+  <option value="0">Без категории
+  [#begin CALENDAR_CATEGORIES#]
+  <option value="[#ID#]" [#if ID="<#CALENDAR_CATEGORY_ID#>"#] selected[#endif#]>[#TITLE#]
+  [#end CALENDAR_CATEGORIES#]
+  </select>
+ </td> 
+</tr>
+
  <tr>
   <td valign="top">&nbsp;</td>
   <td valign="top">
-   <label style="padding-bottom:30px;" ><input type="radio" name="is_task" id="is_event" value="0"[#if IS_TASK!="1"#] checked[#endif#] data-role="none"> <#LANG_EVENT#></label>
+   <label style="padding-bottom:30px;"><input type="radio" name="is_task" id="is_event" value="0"[#if IS_TASK!="1"#] checked[#endif#] data-role="none"> <#LANG_EVENT#></label>
    &nbsp;&nbsp;
    <label><input type="radio" name="is_task" id="is_task" value="1"[#if IS_TASK="1"#] checked[#endif#] data-role="none"> <#LANG_TASK#></label>
    <span id="task_done_block"[#if IS_TASK!="1"#] style="display:none"[#endif#]>
@@ -24,11 +37,11 @@
   <td><#LANG_DATE#>:</td>
   <td>
   <span id="due_block"[#if IS_NO_DATE="1"#] style="display:none"[#endif#]><input style="width: auto;" class="form-control" type="date" name="due" id="due" value="[#DUE#]" data-role="none"></span>
-   <label><input type="checkbox" name="is_nodate" id="is_nodate" value="1"[#if IS_NODATE="1"#] checked[#endif#] data-role="none">
-   <#LANG_NO_DUE_DATE#></label>
+  <label><input type="checkbox" name="is_nodate" id="is_nodate" value="1"[#if IS_NODATE="1"#] checked[#endif#] data-role="none">
+  <#LANG_NO_DUE_DATE#></label>
 
-   <label><input type="checkbox" name="is_repeating" id="is_repeating" value="1"[#if IS_REPEATING="1"#] checked[#endif#] data-role="none">
-   <#LANG_IS_REPEATING#></label>
+  <label><input type="checkbox" name="is_repeating" id="is_repeating" value="1"[#if IS_REPEATING="1"#] checked[#endif#] data-role="none">
+  <#LANG_IS_REPEATING#></label>
 
   </td>
 <script language="javascript">
@@ -188,17 +201,6 @@
   </td>
  </tr>
 
- <tr>
-  <td valign="top">Категория:</td>
-  <td valign="top">
-  <select style="width: auto;" class="form-control" name="calendar_category_id">
-   <option value="0">Без категории
-   [#begin CALENDAR_CATEGORIES#]
-   <option value="[#ID#]" [#if ID="<#CALENDAR_CATEGORY_ID#>"#] selected[#endif#]>[#TITLE#]
-   [#end CALENDAR_CATEGORIES#]
-  </select>
-  </td>
- </tr>
 
  <tr>
   <td><#LANG_RUN_SCRIPT#>:</td>
@@ -249,4 +251,5 @@
  </tr>
  [#end OTHERS#]
 </table>
+</div>
 [#endif OTHERS#]

@@ -1,9 +1,9 @@
-<br>
+<div style="margin:30px;">
 <form action="?" method="post">
 <table width="100%" border="0">
  <tr>
-  <td valign="top"><#LANG_TITLE#>:</td>
-  <td valign="top"><input type="text" name="title" value="[#TITLE#]" size="50">
+  <td valign="top" style="width: 16%;"><#LANG_TITLE#>:</td>
+  <td valign="top"><input style="width: 55%;height: 50px;font-size: 21px;" class="form-control" type="text" name="title" value="[#TITLE#]" size="50">
   [#if SYSTEM!=""#]<br>(<#LANG_SYSTEM_NAME#>: [#SYSTEM#])[#endif#]
   </td>
  </tr>
@@ -11,7 +11,7 @@
 <tr>
  <td valign="top">Категория:</td>
  <td valign="top">
- <select name="calendar_category_id">
+ <select style="width: auto;margin-top: 4px;" class="form-control" name="calendar_category_id">
   <option value="0">Без категории
   [#begin CALENDAR_CATEGORIES#]
   <option value="[#ID#]" [#if ID="<#CALENDAR_CATEGORY_ID#>"#] selected[#endif#]>[#TITLE#]
@@ -23,7 +23,7 @@
  <tr>
   <td valign="top">&nbsp;</td>
   <td valign="top">
-   <label><input type="radio" name="is_task" id="is_event" value="0"[#if IS_TASK!="1"#] checked[#endif#] data-role="none"> <#LANG_EVENT#></label>
+   <label style="padding-bottom:30px;"><input type="radio" name="is_task" id="is_event" value="0"[#if IS_TASK!="1"#] checked[#endif#] data-role="none"> <#LANG_EVENT#></label>
    &nbsp;&nbsp;
    <label><input type="radio" name="is_task" id="is_task" value="1"[#if IS_TASK="1"#] checked[#endif#] data-role="none"> <#LANG_TASK#></label>
    <span id="task_done_block"[#if IS_TASK!="1"#] style="display:none"[#endif#]>
@@ -35,12 +35,12 @@
  <tr>
   <td><#LANG_DATE#>:</td>
   <td>
-  <span id="due_block"[#if IS_NO_DATE="1"#] style="display:none"[#endif#]><input type="date" name="due" id="due" value="[#DUE#]" data-role="none"></span>
-<label><input type="checkbox" name="is_nodate" id="is_nodate" value="1"[#if IS_NODATE="1"#] checked[#endif#] data-role="none">
-   <#LANG_NO_DUE_DATE#></label>
+  <span id="due_block"[#if IS_NO_DATE="1"#] style="display:none"[#endif#]><input style="width: auto;" class="form-control" type="date" name="due" id="due" value="[#DUE#]" data-role="none"></span>
+  <label><input type="checkbox" name="is_nodate" id="is_nodate" value="1"[#if IS_NODATE="1"#] checked[#endif#] data-role="none">
+  <#LANG_NO_DUE_DATE#></label>
 
-<label><input type="checkbox" name="is_repeating" id="is_repeating" value="1"[#if IS_REPEATING="1"#] checked[#endif#] data-role="none">
-   <#LANG_IS_REPEATING#></label>
+  <label><input type="checkbox" name="is_repeating" id="is_repeating" value="1"[#if IS_REPEATING="1"#] checked[#endif#] data-role="none">
+  <#LANG_IS_REPEATING#></label>
 
   </td>
 <script language="javascript">
@@ -133,7 +133,7 @@
   <td valign="top">&nbsp;</td>
   <td valign="top">
    <div id="repeat_type_block"[#if IS_REPEATING!="1"#] style="display:none"[#endif#]>
-   <select name="repeat_type" id="repeat_type" data-role="none">
+   <select style="width: auto;" class="form-control" name="repeat_type" id="repeat_type" data-role="none">
     <option value="1"[#if REPEAT_TYPE=="1"#] selected[#endif#]><#LANG_YEARLY#>
     <option value="2"[#if REPEAT_TYPE=="2"#] selected[#endif#]><#LANG_MONTHLY#>
     <option value="3"[#if REPEAT_TYPE=="3"#] selected[#endif#]><#LANG_WEEKLY#>
@@ -161,20 +161,20 @@
 
  <tr>
   <td valign="top" colspan="2">
-   <div id="advanced_detais" style="display:none">
+   <div id="advanced_detais" style="width: 54%;display:none">
 <table width="100%" border="0">
 <tr>
 
  <tr>
   <td valign="top"><#LANG_NOTES#>:</td>
   <td valign="top">
-  <textarea name="notes" cols="40" rows="3">[#NOTES#]</textarea>
+  <textarea style="width: auto;" class="form-control" name="notes" cols="40" rows="3">[#NOTES#]</textarea>
   </td>
  </tr>
 
   <td valign="top"><#LANG_USER#>:</td>
   <td valign="top">
-  <select name="user_id">
+  <select style="width: auto;" class="form-control" name="user_id">
    <option value="0"><#LANG_ANY_USER#>
    [#begin USERS#]
    <option value="[#ID#]"[#if ID="<#USER_ID#>"#] selected[#endif#]>[#NAME#]
@@ -186,7 +186,7 @@
  <tr>
   <td valign="top"><#LANG_LOCATION#>:</td>
   <td valign="top">
-  <select name="location_id">
+  <select style="width: auto;" class="form-control" name="location_id">
    <option value="0"><#LANG_ANY_LOCATION#>
    [#begin LOCATIONS#]
    <option value="[#ID#]"[#if ID="<#LOCATION_ID#>"#] selected[#endif#]>[#TITLE#]
@@ -199,7 +199,7 @@
  <tr>
   <td><#LANG_RUN_SCRIPT#>:</td>
   <td>
-   <select name="done_script_id">
+   <select style="width: auto;" class="form-control" name="done_script_id">
     <option value="0">
     [#begin SCRIPTS#]
     <option value="[#ID#]"[#if ID="<#DONE_SCRIPT_ID#>"#] selected[#endif#]>[#TITLE#]
@@ -218,8 +218,8 @@
 
  <tr>
   <td valign="top">&nbsp;</td>
-  <td valign="top"><input type="submit" name="submit" value="<#LANG_SUBMIT#>">
-  <a href="?"><#LANG_CANCEL#></a>
+  <td valign="top"><input style="margin-top: 20px;" class="btn btn-default" type="submit" name="submit" value="<#LANG_SUBMIT#>">
+  <a style="margin-top: 20px;" class="btn btn-default" href="?"><#LANG_CANCEL#></a>
   [#if ID!=""#]
   <br><Br>
   <small><a href="?view_mode=<#VIEW_MODE#>&id=<#ID#>&mode=delete" onClick="return confirm('<#LANG_ARE_YOU_SURE#>');"><#LANG_DELETE#></a></small>
@@ -231,9 +231,11 @@
  <input type="hidden" name="id" value="<#ID#>">
 </table>
 </form>
+</div>
 
 [#if OTHERS#]
 &nbsp;
+<div style="margin:30px;">
 <h1><#LANG_SIMILAR_ITEMS#></h1>
 <table width="100%" border="0">
  [#begin OTHERS#]
@@ -243,4 +245,5 @@
  </tr>
  [#end OTHERS#]
 </table>
+</div>
 [#endif OTHERS#]
