@@ -301,7 +301,7 @@ function usual(&$out) {
     $v['DAYS']=$days;
     $calendar_categories[$k1]['EVENTS_PAST'][]=$v;
    }
-   //$out['EVENTS_PAST']=$events_past;
+   $out['EVENTS_PAST']=$events_past;
   }
 
   $how_soon=SETTINGS_APP_CALENDAR_SOONLIMIT;
