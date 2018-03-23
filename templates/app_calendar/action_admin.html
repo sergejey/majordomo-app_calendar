@@ -1,5 +1,4 @@
 
-
 <ul class="nav nav-tabs">
  <li [#if DATA_SOURCE!="calendar_events" && DATA_SOURCE!=""#][#else#]class="active"[#endif#]><a href="?data_source=calendar_events">Календарь</a></li>
  <li  [#if DATA_SOURCE=="calendar_categories"#]class="active"[#endif#]><a href="?data_source=calendar_categories">Категории</a></li>
@@ -7,6 +6,7 @@
 </ul>
 
 [#if DATA_SOURCE="calendar_settings" #]
+<br>
 <big><a href="<#ROOTHTML#>popup/app_calendar.html" class="btn btn-default" target=_blank><#LANG_PREVIEW#></a></big>
 <br><br>
 [#module name="settings" action="admin" filter_name="APP_CALENDAR"#]
