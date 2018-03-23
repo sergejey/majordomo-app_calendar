@@ -1,4 +1,45 @@
 
+<ul class="nav nav-tabs">
+ <li [#if DATA_SOURCE!="calendar_events" && DATA_SOURCE!=""#][#else#]class="active"[#endif#]><a href="?data_source=calendar_events">Календарь</a></li>
+ <li  [#if DATA_SOURCE=="calendar_categories"#]class="active"[#endif#]><a href="?data_source=calendar_categories">Категории</a></li>
+ <li [#if DATA_SOURCE=="calendar_settings"#]class="active"[#endif#]><a href="?data_source=calendar_settings">Настройки</a></li>
+</ul>
+
+[#if DATA_SOURCE="calendar_settings" #]
+<br>
 <big><a href="<#ROOTHTML#>popup/app_calendar.html" class="btn btn-default" target=_blank><#LANG_PREVIEW#></a></big>
 <br><br>
 [#module name="settings" action="admin" filter_name="APP_CALENDAR"#]
+[#endif DATA_SOURCE#]
+
+[#if DATA_SOURCE="calendar_events" || DATA_SOURCE=""#] 
+ <!-- table calendar_events search -->
+ [#if VIEW_MODE="search_calendar_events" || VIEW_MODE=""#]
+  [#inc calendar_events_search_admin.html#]
+ [#endif VIEW_MODE#]
+ <!-- / table calendar_events search -->
+ <!-- table calendar_events edit -->
+ [#if VIEW_MODE="edit_calendar_events"#]
+    [#inc calendar_events_edit.html#]
+ [#endif VIEW_MODE#]
+ <!-- / table calendar_events edit -->
+[#endif DATA_SOURCE#]
+
+[#if DATA_SOURCE="calendar_categories"#]
+ <!-- table calendar_categories search -->
+ [#if VIEW_MODE="search_calendar_categories" || VIEW_MODE=""#]
+  [#inc calendar_categories_search_admin.html#]
+ [#endif VIEW_MODE#]
+ <!-- / table calendar_categories search -->
+ <!-- table calendar_categories edit -->
+ [#if VIEW_MODE="edit_calendar_categories"#]
+
+    [#inc calendar_categories_edit.html#]
+ [#endif VIEW_MODE#]
+
+ <!-- table calendar_categories view --> 
+ [#if VIEW_MODE="view_calendar_categories"#]
+   [#inc calendar_categories_view.html#]
+ [#endif VIEW_MODE#]
+ <!-- / table calendar_categories view -->
+ [#endif DATA_SOURCE#]

@@ -6,6 +6,8 @@
   if ($this->owner->name=='panel') {
    $out['CONTROLPANEL']=1;
   }
+
+
   $qry="1";
   // search filters
   //searching 'TITLE' (varchar)
@@ -14,6 +16,13 @@
    $qry.=" AND TITLE LIKE '%".DBSafe($title)."%'";
    $out['TITLE']=$title;
   }
+
+global $calendar_category_id;
+if ($calendar_category_id!="") {
+ $out['CALENDAR_CATEGORY_ID']=(int)$calendar_category_id;
+ $qry.=" AND calendar_events.CALENDAR_CATEGORY_ID=".$out['CALENDAR_CATEGORY_ID'];
+}
+
   // QUERY READY
   global $save_qry;
   if ($save_qry) {
@@ -36,10 +45,10 @@
    }
    $session->data['calendar_events_sort']=$sortby_calendar_events;
   }
-  if (!$sortby_calendar_events) $sortby_calendar_events="ID DESC";
+  if (!$sortby_calendar_events) $sortby_calendar_events="DUE DESC";
   $out['SORTBY']=$sortby_calendar_events;
   // SEARCH RESULTS
-  $res=SQLSelect("SELECT * FROM calendar_events WHERE $qry ORDER BY ".$sortby_calendar_events);
+  $res=SQLSelect("SELECT calendar_events.*,calendar_categories.TITLE as CATEGORY FROM calendar_events left join calendar_categories ON calendar_events.calendar_category_id=calendar_categories.id WHERE $qry ORDER BY ".$sortby_calendar_events);
   if ($res[0]['ID']) {
    paging($res, 50, $out); // search result paging
    colorizeArray($res);
@@ -50,4 +59,6 @@
    }
    $out['RESULT']=$res;
   }
+ $categories=SQLSelect("SELECT ID, TITLE FROM calendar_categories ORDER BY PRIORITY DESC,TITLE");
+ $out['CATEGORIES']=$categories;
 ?>

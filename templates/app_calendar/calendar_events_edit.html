@@ -1,4 +1,3 @@
-<a style="margin: 15px 0px 5px 15px;" class="btn btn-default" href="?">Назад</a>
 <div style="margin:30px;">
 <form action="?" method="post">
 <table width="100%" border="0">
@@ -12,7 +11,7 @@
 <tr>
  <td valign="top">Категория:</td>
  <td valign="top">
- <select style="margin-top: 4px;width: auto;" class="form-control" name="calendar_category_id">
+ <select style="width: auto;margin-top: 4px;" class="form-control" name="calendar_category_id">
   <option value="0">Без категории
   [#begin CALENDAR_CATEGORIES#]
   <option value="[#ID#]" [#if ID="<#CALENDAR_CATEGORY_ID#>"#] selected[#endif#]>[#TITLE#]
@@ -79,44 +78,6 @@
  }
  );
 
- $('#due').DatePicker({
-        format:'Y-m-d',
-        date: $('#due').val(),
-        current: $('#due').val(),
-        starts: 1,
-        position: 'r',
-        onBeforeShow: function(){
-                $('#due').DatePickerSetDate($('#due').val(), true);
-        },
-        onChange: function(formated, dates){
-                $('#due').val(formated);
-                $('#due').DatePickerHide();
-        }
-});
-</script>
- </tr>
-
- <tr>
-  <td valign="top">&nbsp;</td>
-  <td valign="top">
-   <div id="repeat_type_block"[#if IS_REPEATING!="1"#] style="display:none"[#endif#]>
-   <select style="width: auto;" class="form-control" name="repeat_type" id="repeat_type" data-role="none">
-    <option value="1"[#if REPEAT_TYPE=="1"#] selected[#endif#]><#LANG_YEARLY#>
-    <option value="2"[#if REPEAT_TYPE=="2"#] selected[#endif#]><#LANG_MONTHLY#>
-    <option value="3"[#if REPEAT_TYPE=="3"#] selected[#endif#]><#LANG_WEEKLY#>
-    <option value="9"[#if REPEAT_TYPE=="9"#] selected[#endif#]><#LANG_OTHER#>
-   </select>
-
-   <div id="restore_in_block" [#if REPEAT_TYPE!="9"#] style="display:none"[#endif#]>
-   <#LANG_RESTORE_IN#> <input type="text" size="5" name="repeat_in" value="[#REPEAT_IN#][#if REPEAT_IN=""#]3[#endif#]"> <#LANG_IN_DAYS#>
-
-   <label><input type="checkbox" name="is_repeating_after" value="1"[#if IS_REPEATING_AFTER="1"#] checked[#endif#] data-role="none">
-   <#LANG_AFTER_COMPLETION#></label>
-   </div>
-   </div>
-
-<script language="javascript">
-
  $('#is_repeating').click (function ()
   {
   var thisCheck = $(this);
@@ -139,8 +100,53 @@
  }
  );
 
+ $('#advanced').click (function ()
+  {
+  var thisCheck = $(this);
+  if (thisCheck.is(':checked')) {
+   $('#advanced_detais').show();
+  } else {
+   $('#advanced_detais').hide();
+  }
+ }
+ );
 
+ $('#due').DatePicker({
+        format:'Y-m-d',
+        date: $('#due').val(),
+        current: $('#due').val(),
+        starts: 1,
+        position: 'r',
+        onBeforeShow: function(){
+                $('#due').DatePickerSetDate($('#due').val(), true);
+        },
+        onChange: function(formated, dates){
+                $('#due').val(formated);
+                $('#due').DatePickerHide();
+        }
+}
+);
 </script>
+ </tr>
+
+ <tr>
+  <td valign="top">&nbsp;</td>
+  <td valign="top">
+   <div id="repeat_type_block"[#if IS_REPEATING!="1"#] style="display:none"[#endif#]>
+   <select style="width: auto;" class="form-control" name="repeat_type" id="repeat_type" data-role="none">
+    <option value="1"[#if REPEAT_TYPE=="1"#] selected[#endif#]><#LANG_YEARLY#>
+    <option value="2"[#if REPEAT_TYPE=="2"#] selected[#endif#]><#LANG_MONTHLY#>
+    <option value="3"[#if REPEAT_TYPE=="3"#] selected[#endif#]><#LANG_WEEKLY#>
+    <option value="9"[#if REPEAT_TYPE=="9"#] selected[#endif#]><#LANG_OTHER#>
+   </select>
+
+   <div id="restore_in_block" [#if REPEAT_TYPE!="9"#] style="display:none"[#endif#]>
+   <#LANG_RESTORE_IN#> <input type="text" size="5" name="repeat_in" value="[#REPEAT_IN#][#if REPEAT_IN=""#]3[#endif#]"> <#LANG_IN_DAYS#>
+
+   <label><input type="checkbox" name="is_repeating_after" value="1"[#if IS_REPEATING_AFTER="1"#] checked[#endif#] data-role="none">
+   <#LANG_AFTER_COMPLETION#></label>
+   </div>
+   </div>
 
   </td>
  </tr>
@@ -152,22 +158,10 @@
   </td>
  </tr>
 
-<script language="javascript">
-  $('#advanced').click (function ()
-  {
-  var thisCheck = $(this);
-  if (thisCheck.is(':checked')) {
-   $('#advanced_detais').show();
-  } else {
-   $('#advanced_detais').hide();
-  }
- }
- );
-</script>
 
  <tr>
   <td valign="top" colspan="2">
-   <div id="advanced_detais" style="width: 50%;display:none">
+   <div id="advanced_detais" style="width: 54%;display:none">
 <table width="100%" border="0">
 <tr>
 
