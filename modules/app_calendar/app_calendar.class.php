@@ -197,6 +197,8 @@ function admin(&$out) {
 
 
  }
+ if ($this->data_source=='calendar_full') 
+   $this->calendar_full($out);
  if (isset($this->data_source) && !$_GET['data_source'] && !$_POST['data_source']) {
   $out['SET_DATASOURCE']=1;
  }
@@ -287,7 +289,7 @@ function usual(&$out) {
    $out['EVENTS_TODAY']=$events_today;
   }
 
-  $daymorph=Array('дней','день','дня','дня','дня','дней','дней','дней','дней','дней');
+  
 
   $calendar_categories=SQLSelect("SELECT ID,TITLE,ICON FROM calendar_categories ORDER BY PRIORITY DESC");
   $calendar_categories[]=array('ID'=>0,'TITLE'=>'Без категории');
@@ -297,7 +299,8 @@ function usual(&$out) {
   if ($events_past) {
    foreach($events_past as $k=>$v) {
     $days=abs($v['AGE']);
-    $days=$daymorph[$days-floor($days/10)*10];
+    $days=GetNumberWord($days,array('день','дня','дней'));
+    
     $v['DAYS']=$days;
     $calendar_categories[$k1]['EVENTS_PAST'][]=$v;
    }
@@ -339,7 +342,7 @@ function usual(&$out) {
      //$new_events[]=$ev;
      if ($ev['AGE']) {
       $days=abs($ev['AGE']);
-      $days=$daymorph[$days-floor($days/10)*10];
+      $days=GetNumberWord($days,array('день','дня','дней'));
       $ev['DAYS']=$days;   
      } 
      $calendar_categories[$k1]['EVENTS_SOON'][]=$ev;
@@ -603,6 +606,15 @@ function usual(&$out) {
   // some action for related tables
   @unlink(ROOT.'./cms/calendar/'.$rec['ICON']);
   SQLExec("DELETE FROM calendar_categories WHERE ID='".$rec['ID']."'");
+ }
+
+/**
+* calendar_full
+*
+* @access public
+*/
+ function calendar_full(&$out) {
+  require(DIR_MODULES.$this->name.'/calendar_full.inc.php');
  }
 /**
 * Install
