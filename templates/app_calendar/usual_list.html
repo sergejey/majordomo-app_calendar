@@ -1,6 +1,11 @@
+[#if ONLY_CALENDAR==0#]
+
 <style>
 input[type=checkbox] {height: 15px;width: 15px;vertical-align: bottom;margin-top: 0;}div.menu {display: none;}div.menu > a > img:hover {filter: saturate(300%);}#yestask:hover > div.menu {display: inline;}h2, .paddingleft {margin-left: 20px;}h1 {white-space:pre;}.menu {padding: 3px 7px 5px 6px;background-color: #efefef;border-radius: 5px;color: #9a9a9a;font-size: 14px;margin: 0 5px 0 3px;;border: 1px solid #bdbdbd;}.title {overflow: hidden;text-align: left;font-size: 22px;}.title span {vertical-align: middle;}.title:before, .title:after {content: "";display: inline-block;vertical-align: middle;width: 100%;height: 2px;background-color: #f3f3f3;position: relative;}.title:before {margin-left: calc(-100% - -20px);left: -7px;}.title:after {margin-right: -100%;right: -7px;}
+@media screen and (max-width: 1240px) {.calendar-mob {display: none;}}
+
 </style>
+
 
 <form action="?" method="get">
 <table style="margin-top: 30px;" border="0" align="center">
@@ -12,6 +17,30 @@ input[type=checkbox] {height: 15px;width: 15px;vertical-align: bottom;margin-top
  <input type="hidden" name="view_mode" value="edit">
 </table>
 </form>
+[#endif ONLY_CALENDAR#]
+
+
+[#if SHOW_CALENDAR#]
+[#if ONLY_CALENDAR==0#]
+ <div class="calendar-mob" style="float: right; width: 260px; padding-left: 10px;">
+[#endif ONLY_CALENDAR#]
+
+[#if YEAR_CALENDAR==0#]
+ <a href="?calendar=1&year_calendar=1" class="btn btn-default btn-sm" style="margin-top: 10px;"><span class="glyphicon glyphicon-calendar"></span> Календарь на год</a>
+[#else#]
+ <a onclick="javascript:history.back(); return false;" class="btn btn-default" style="font-weight: 600;width: 110px; display:block; margin-top: 10px;"><span class="	glyphicon glyphicon-hand-left"></span> Назад</a>
+[#endif YEAR_CALENDAR#]
+
+
+ [#inc calendar_full_admin.html#]
+[#if ONLY_CALENDAR==0#]
+</div>
+[#endif ONLY_CALENDAR#]
+
+[#endif SHOW_CALENDAR#]
+
+
+[#if ONLY_CALENDAR==0#]
 
 <h1 class="title" style="padding-top: 15px;"><img style="height: 39px;padding-bottom: 5px;" src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA1MDEuNTUxIDUwMS41NTEiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUwMS41NTEgNTAxLjU1MTsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MTJweCIgaGVpZ2h0PSI1MTJweCI+CjxyZWN0IHg9IjM5LjcwNiIgeT0iNDguMDY1IiBzdHlsZT0iZmlsbDojQUNCM0JBOyIgd2lkdGg9IjUwLjE1NSIgaGVpZ2h0PSI0NTMuNDg2Ii8+CjxwYXRoIHN0eWxlPSJmaWxsOiNGRkQxNUM7IiBkPSJNNDc3LjUxOCw4OC44MTZ2MjgyLjEyMmMtMTI0LjM0My05MS45NTEtMjQ3LjY0MSw4MC40NTctMzcxLjk4NCwxMC40NDkgIGMtNS4yMjQtMy4xMzUtMTAuNDQ5LTYuMjY5LTE1LjY3My0xMC40NDlWODguODE2YzUuMjI0LDQuMTgsMTAuNDQ5LDcuMzE0LDE1LjY3MywxMC40NDkgIEMyMjkuODc4LDE3MC4zMTgsMzUzLjE3Ni0yLjA5LDQ3Ny41MTgsODguODE2eiIvPgo8cGF0aCBzdHlsZT0iZmlsbDojOUFBOUI1OyIgZD0iTTg5Ljg2MSw0OC4wNjV2NDIuODQxYy03LjMxNCw0LjE4LTE1LjY3Myw2LjI2OS0yNS4wNzgsNi4yNjlzLTE3Ljc2My0yLjA5LTI1LjA3OC02LjI2OVY0OC4wNjUgIEg4OS44NjF6Ii8+CjxjaXJjbGUgc3R5bGU9ImZpbGw6I0ZGNzA1ODsiIGN4PSI2NC43ODQiIGN5PSI0MC43NTEiIHI9IjQwLjc1MSIvPgo8cGF0aCBzdHlsZT0iZmlsbDojRjhCNjRDOyIgZD0iTTEwNS41MzUsOTkuMjY1djI4Mi4xMjJjLTUuMjI0LTMuMTM1LTEwLjQ0OS02LjI2OS0xNS42NzMtMTAuNDQ5Vjg4LjgxNiAgQzk1LjA4Niw5Mi45OTYsMTAwLjMxLDk2LjEzMSwxMDUuNTM1LDk5LjI2NXoiLz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==" /> <#LANG_TODAY#></h1>
 <table class="paddingleft" border="0">
@@ -98,3 +127,4 @@ input[type=checkbox] {height: 15px;width: 15px;vertical-align: bottom;margin-top
  );
 </script>
  <br><br>
+[#endif ONLY_CALENDAR#]

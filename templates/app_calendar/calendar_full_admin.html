@@ -1,0 +1,220 @@
+<style>
+.calendar {
+    padding: 1px;
+    width: 24px;
+    margin:1px;
+    display: inline-block;
+    cursor: default;
+	font-size: 14px;
+}
+
+.today {
+    color: #fff !important;
+    background-color: #1eb51a;
+    border-radius: 3px;
+}
+
+.category1 {
+    border: 2px solid #5cb85c;
+    border-radius: 50%;
+	cursor: help;
+}
+
+.category2 {
+    border: 2px solid #428bca;
+    border-radius: 50%;
+	cursor: help;
+}
+
+.category3 {
+    border: 2px solid #555555;
+    border-radius: 50%;
+	cursor: help;
+}
+
+.category4 {
+    border: 2px solid #f0ad4e;
+    border-radius: 50%;
+	cursor: help;
+}
+.category5 {
+    border: 2px solid #d9534f;
+    border-radius: 50%;
+	cursor: help;
+}
+
+.category1.category2 {
+    border: 2px solid #5cb85c;
+    box-shadow: 0 0 0 2px #428bca;
+    border-radius: 50%;
+	cursor: help;
+}
+
+.category1.category3 {
+    border: 2px solid #5cb85c;
+    box-shadow: 0 0 0 2px #555555;
+    border-radius: 50%;
+	cursor: help;
+}
+
+.category1.category4 {
+    border: 2px solid #5cb85c;
+    box-shadow: 0 0 0 2px #f0ad4e;
+    border-radius: 50%;
+	cursor: help;
+}
+
+.category1.category5 {
+    border: 2px solid #5cb85c;
+    box-shadow: 0 0 0 2px #d9534f;
+    border-radius: 50%;
+	cursor: help;
+}
+
+.category2.category3 {
+    border: 2px solid #428bca;
+    box-shadow: 0 0 0 2px #555555;
+    border-radius: 50%;
+	cursor: help;
+}
+
+.category2.category4 {
+    border: 2px solid #428bca;
+    box-shadow: 0 0 0 2px #f0ad4e;
+    border-radius: 50%;
+	cursor: help;
+}
+
+.category2.category5 {
+    border: 2px solid #428bca;
+    box-shadow: 0 0 0 2px #d9534f;
+    border-radius: 50%;
+	cursor: help;
+}
+
+.category3.category4 {
+    border: 2px solid #555555;
+    box-shadow: 0 0 0 2px #f0ad4e;
+    border-radius: 50%;
+	cursor: help;
+}
+
+.category3.category5 {
+    border: 2px solid #555555;
+    box-shadow: 0 0 0 2px #d9534f;
+    border-radius: 50%;
+	cursor: help;
+}
+
+.category4.category5 {
+    border: 2px solid #f0ad4e;
+    box-shadow: 0 0 0 2px #d9534f;
+    border-radius: 50%;
+	cursor: help;
+}
+
+.calendar_hd {
+    padding: 1px;
+    width: 24px;
+    margin:1px;
+    display: inline-block;
+    color: red;
+	cursor: help;
+	font-weight: 600;
+	font-size: 14px;
+}
+
+.calendar_we {
+    padding: 1px;
+    width: 24px;
+    margin: 1px;
+    text-align: center;
+    display: inline-block;
+    color: red;
+	font-weight: 600;
+	font-size: 14px;
+}
+
+.calendar_week {
+    margin-bottom: 10px;
+    padding: 1px;
+    width: 24px;
+    margin:1px;
+    display: inline-block;
+    border-bottom: 1px solid #c0c0c0;
+	/* font: bold 12px/1.2 Arial, sans-serif; */
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.calendar_grey {
+    padding: 1px;
+    width: 24px;
+    margin:1px;
+    color: #b9b9b9;
+    display: inline-block;
+    cursor: default;
+	font-size: 14px;
+}
+
+
+.month_name {
+    padding: 0px;
+    margin:2px 0 5px 0;
+	text-align: center;
+	font-weight: bold;
+	color: #8C3D02;
+    font-size: 16px;
+}
+
+.month {
+    [#if ONLY_CALENDAR=="1"#]
+	padding: 10px;
+    width: 230px;
+    [#else ONLY_CALENDAR#]
+     padding: 10px;
+     width: 220px;
+    [#endif ONLY_CALENDAR#]
+    height: 220px;
+    margin: 10px 5px 0px 0;
+    display: inline-block;
+    border: 1px solid #d2d2d2;
+    vertical-align: top;
+	text-align: center;
+	box-sizing: content-box;
+	border-radius: 3px;
+}
+
+.week-block {
+    padding-bottom: 5px;
+}
+</style>
+
+<script>
+$(document).ready(function(){
+ $('[data-toggle="tooltip"]').tooltip({
+    placement: 'bottom',
+ });
+});
+</script>
+
+
+[#begin CALENDAR_MONTH#]
+<div class="month"> 
+<div class="month_name">
+[#MONTH_NAME#]
+</div>
+<div class="week-block">
+<div class="calendar_week">Пн</div> 
+<div class="calendar_week">Вт</div> 
+<div class="calendar_week">Ср</div> 
+<div class="calendar_week">Чт</div> 
+<div class="calendar_week">Пт</div> 
+<div class="calendar_week">Сб</div> 
+<div class="calendar_week">Вс</div> 
+</div>
+[#begin CALENDAR#]
+[#DAY#] 
+[#end CALENDAR#]
+</div>
+[#end CALENDAR_MONTH#]

@@ -1,30 +1,166 @@
+<script language="javascript">
+ $('.at_calendar').click (function ()
+  {
+  var thisCheck = $(this);
+  if (thisCheck.is(':checked')) {
+   var url="at_calendar=1&id=";
+   url=url+thisCheck.val();
+  } else {
+   var url="at_calendar=0&calendar_color=0&id=";
+   url=url+thisCheck.val();
+  }
+  url= "/modules/app_calendar/calendar_update.php?" + url;
+  $.ajax({
+   url: url,
+   cache: false,
+   success: function(html){
+
+  }
+});
+
+
+ }
+ );
+</script>
+
+<script language="javascript">
+ $('.workdays').click (function ()
+  {
+  var thisCheck = $(this);
+  if (thisCheck.is(':checked')) {
+   var url="workdays=1&id=";
+   url=url+thisCheck.val();
+  } else {
+   var url="workdays=0&calendar_color=0&id=";
+   url=url+thisCheck.val();
+  }
+  url= "/modules/app_calendar/calendar_update.php?" + url;
+  $.ajax({
+   url: url,
+   cache: false,
+   success: function(html){
+
+  }
+});
+
+
+ }
+ );
+</script>
+
+<script language="javascript">
+ $('.holidays').click (function ()
+  {
+  var thisCheck = $(this);
+  if (thisCheck.is(':checked')) {
+   var url="holidays=1&id=";
+   url=url+thisCheck.val();
+  } else {
+   var url="holidays=0&calendar_color=0&id=";
+   url=url+thisCheck.val();
+  }
+  url= "/modules/app_calendar/calendar_update.php?" + url;
+  $.ajax({
+   url: url,
+   cache: false,
+   success: function(html){
+
+  }
+});
+
+
+ }
+ );
+</script>
+
+<script language="javascript">
+
+function SaveColor(selectObject,category_id)
+  {
+  var url="calendar_color=";
+  url=url+selectObject.value;
+  url=url+"&id="+ category_id;
+  url= "/modules/app_calendar/calendar_update.php?" + url;
+  
+
+  switch(selectObject.value) {
+    case "0":
+       selectObject.style.backgroundColor = "#FFFFFF";
+        break;
+    case "1":
+       selectObject.style.backgroundColor = "#5cb85c";
+        break;
+    case "2":
+        selectObject.style.backgroundColor = "#428bca";
+        break;
+    case "3":
+        selectObject.style.backgroundColor = "#555555";
+        break;
+    case "4":
+        selectObject.style.backgroundColor = "#f0ad4e";
+        break;
+    case "5":
+        selectObject.style.backgroundColor = "#d9534f";
+        break;
+
+  }
+  $.ajax({
+   url: url,
+   cache: false,
+   success: function(html){
+
+  }
+});
+
+}
+</script>
+
 <br>
 <a href="?view_mode=edit_calendar_categories&data_source=<#DATA_SOURCE#>" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i> <#LANG_ADD_NEW_RECORD#></a>
 
 <br><br>
+
 <table width=100% border=0><tr>
 <td valign=top>
 <!-- results -->
 [#if RESULT#]
 <!-- search results (list) -->
 <form action="?" method="post" name="frmList_calendar_categories" style="padding:0px">
-<table class="table table-striped">
+<table class="table table-hover">
+<tr class="active">
+<script>
+$('#tooltip').ready(function(){
+$('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+<th style="width: 80px;">Иконка</th><th>Категория</th><th style="width: 60px;"><span id="tooltip" style="border-bottom: 1px dashed #000;" data-toggle="tooltip" title="Выделить дату в Календаре на год">Выделить</span></th><th>Выбор цвета рамки</th><th>Праздники</th><th>Рабочие</th>
+</tr>
 [#begin RESULT#]
 <tr>
- <td
-  >
-  <b>
-   [#TITLE#]
-  </a></b>
+<td>[#if ICON!=""#]<img style="width: 30px;" src="<#ROOTHTML#>cms/calendar/[#ICON#]">[#else#]<img style="width: 30px;" src="<#ROOTHTML#>img/no_photo.gif">[#endif ICON#]</td>
+ <td>
+  <b>[#TITLE#]</b>
  </td>
- <td width="300">
+<td><input type="checkbox" name="atcalendar[#ID#]" class="checkbox at_calendar" value="[#ID#]" [#if AT_CALENDAR==1#] checked [#endif AT_CALENDAR#]></td>
+<td><select name="color[#ID#]" class="form-control calendar_color" value="[#CALENDAR_COLOR#]" onchange="SaveColor(this,[#ID#])" style="width: 170px; background-color: [#if CALENDAR_COLOR==0#]#FFFFFF[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==1#]#5cb85c[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==2#]#428bca[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==3#]#555555[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==4#]#f0ad4e[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==5#]#d9534f[#endif CALENDAR_COLOR#]">
+ <option value="0" [#if CALENDAR_COLOR==0#] selected [#endif CALENDAR_COLOR#]>Выбрать цвет</option>
+ <option value="1" style="background-color: #5cb85c" [#if CALENDAR_COLOR==1#] selected [#endif CALENDAR_COLOR#]> </option>
+ <option value="2" style="background-color: #428bca" [#if CALENDAR_COLOR==2#] selected [#endif CALENDAR_COLOR#]> </option>
+ <option value="3" style="background-color: #555555" [#if CALENDAR_COLOR==3#] selected [#endif CALENDAR_COLOR#]> </option>
+ <option value="4" style="background-color: #f0ad4e" [#if CALENDAR_COLOR==4#] selected [#endif CALENDAR_COLOR#]> </option>
+ <option value="5" style="background-color: #d9534f" [#if CALENDAR_COLOR==5#] selected [#endif CALENDAR_COLOR#]> </option>
+</select>
+</td>
+<td><input type="checkbox" name="holidays[#ID#]" class="checkbox holidays" value="[#ID#]" [#if HOLIDAYS==1#] checked [#endif HOLIDAYS#]></td>
+<td><input type="checkbox" name="workdays[#ID#]" class="checkbox workdays" value="[#ID#]" [#if WORKDAYS==1#] checked [#endif WORKDAYS#]></td>
+
+ <td width="200">
  
   [#if "<#ACTION#>"=="admin"#]
   
     <b><a  class="btn btn-default btn-sm" href="?data_source=<#DATA_SOURCE#>&view_mode=edit_calendar_categories&id=[#ID#]" title="<#LANG_EDIT#>"><i class="glyphicon glyphicon-pencil"></i></a></b>
   
-    <b><a  class="btn btn-default btn-sm" href="?data_source=<#DATA_SOURCE#>&view_mode=edit_calendar_categories&parent_id=[#ID#]" title="<#LANG_EXPAND#>"><i class="glyphicon glyphicon-save"></i></a>
-   
+    
   [#if !RESULT#]
 
     <a  class="btn btn-default btn-sm" href="?data_source=<#DATA_SOURCE#>&view_mode=delete_calendar_categories&id=[#ID#]" onClick="return confirm('<#LANG_ARE_YOU_SURE#>')" title="<#LANG_DELETE#>"><i class="glyphicon glyphicon-remove"></i></a>
@@ -33,15 +169,17 @@
   [#endif ACTION#]
  </td>
 </tr>
-[#if RESULT#]
- <tr><td colspan=100 style="padding-left:20px" bgcolor="#FFFFFF">
-  <table  class="table table-striped">
-   [#tree RESULT#]
-  </table>
- </td></tr>
-[#endif RESULT#]
+
 [#end RESULT#]
 </table>
+
+<style>
+.info {color: #8C3D02;}
+</style>
+
+<div class="info">В категории отмеченной галочкой Праздники хранятся праздники, являющиеся выходными </div>
+<div class="info">В категории отмеченной галочкой Рабочие хранятся выходные, на которые перенесены рабочие дни</div>
+<div class="info">Категории отмеченные галочкой Выделить отмечаются на календаре цветом, выбранном в графе Выбор цвета рамки</div>
 <input type="hidden" name="data_source" value="<#DATA_SOURCE#>">
 <input type="hidden" name="view_mode" value="multiple_calendar_categories">
 </form>

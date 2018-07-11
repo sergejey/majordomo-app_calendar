@@ -94,6 +94,8 @@ function getParams() {
 */
 function run() {
  global $session;
+ 
+   
   $out=array();
   if ($this->action=='admin') {
    $this->admin($out);
@@ -131,19 +133,28 @@ function run() {
 * @access public
 */
  function checkSettings() {
+  
   $settings=array(
    array(
     'NAME'=>'APP_CALENDAR_SOONLIMIT', 
     'TITLE'=>'Days to show in "soon" section', 
     'TYPE'=>'text',
-    'DEFAULT'=>'6'
+    'DEFAULT'=>'14'
     ),
    array(
     'NAME'=>'APP_CALENDAR_SHOWDONE', 
     'TITLE'=>'Show recently done items',
     'TYPE'=>'yesno',
     'DEFAULT'=>'1'
+    ),
+   array(
+    'NAME'=>'APP_CALENDAR_SHOWCALENDAR', 
+    'TITLE'=>'Показывать календарь в Делах и Событиях',
+    'TYPE'=>'yesno',
+    'DEFAULT'=>'1'
     )
+
+
    );
 
 
@@ -155,6 +166,7 @@ function run() {
      $rec['DEFAULTVALUE']=$v['DEFAULT'];
      $rec['TITLE']=$v['TITLE'];
      $rec['TYPE']=$v['TYPE'];
+     $rec['DATA']=$v['DATA'];
      $rec['ID']=SQLInsert('settings', $rec);
      Define('SETTINGS_'.$rec['NAME'], $v['DEFAULT']);
     }
@@ -197,6 +209,8 @@ function admin(&$out) {
 
 
  }
+ if ($this->data_source=='calendar_full') 
+   $this->calendar_full($out);
  if (isset($this->data_source) && !$_GET['data_source'] && !$_POST['data_source']) {
   $out['SET_DATASOURCE']=1;
  }
@@ -244,6 +258,38 @@ function usual(&$out) {
    $this->redirect("?");
   }
 
+
+  if (defined('TEMP_APP_CALENDAR_SHOW_CALENDAR')==false and SETTINGS_APP_CALENDAR_SHOWCALENDAR==1) { 
+   $m=date('m');
+   $m1=$m+1;
+
+   if ($_GET['year_calendar']==1) {
+    $out['YEAR_CALENDAR']=1;
+    $m=1; 
+    $m1=12; 
+   } else {
+    if (IsSet($this->currentmonth)) {
+     $m1=(int)date('m',time());
+     $m2=$m1;
+    } else { 
+     if (IsSet($this->mon1)) {
+      $m=(int)$this->mon1;
+     } 
+    
+     if (IsSet($this->mon2)) {
+      $m1=(int)$this->mon2;
+     }
+    }  
+   }
+   $this->calendar_full($out,$m,$m1);
+   $out['SHOW_CALENDAR']=1;
+  }
+
+  if (IsSet($this->calendar) or $_GET['calendar']==1)
+   $out['ONLY_CALENDAR']=1;
+  else
+ {
+
   $events_today_temp=SQLSelect("SELECT calendar_events.*,calendar_categories.ICON FROM calendar_events left join calendar_categories on calendar_events.calendar_category_id=calendar_categories.id WHERE TO_DAYS(DUE)=TO_DAYS(NOW()) AND IS_REPEATING!=1 AND IS_TASK=0  ORDER BY IS_TASK DESC");
   if ($events_today_temp) {
    foreach($events_today_temp as $k=>$v) {
@@ -287,7 +333,7 @@ function usual(&$out) {
    $out['EVENTS_TODAY']=$events_today;
   }
 
-  $daymorph=Array('дней','день','дня','дня','дня','дней','дней','дней','дней','дней');
+  
 
   $calendar_categories=SQLSelect("SELECT ID,TITLE,ICON FROM calendar_categories ORDER BY PRIORITY DESC");
   $calendar_categories[]=array('ID'=>0,'TITLE'=>'Без категории');
@@ -297,7 +343,8 @@ function usual(&$out) {
   if ($events_past) {
    foreach($events_past as $k=>$v) {
     $days=abs($v['AGE']);
-    $days=$daymorph[$days-floor($days/10)*10];
+    $days=GetNumberWord($days,array('день','дня','дней'));
+    
     $v['DAYS']=$days;
     $calendar_categories[$k1]['EVENTS_PAST'][]=$v;
    }
@@ -339,7 +386,7 @@ function usual(&$out) {
      //$new_events[]=$ev;
      if ($ev['AGE']) {
       $days=abs($ev['AGE']);
-      $days=$daymorph[$days-floor($days/10)*10];
+      $days=GetNumberWord($days,array('день','дня','дней'));
       $ev['DAYS']=$days;   
      } 
      $calendar_categories[$k1]['EVENTS_SOON'][]=$ev;
@@ -356,6 +403,8 @@ function usual(&$out) {
   }
  }
   $out['CALENDAR_CATEGORIES']=$calendar_categories;
+
+
   if (SETTINGS_APP_CALENDAR_SHOWDONE=='1') {
    $recently_done=SQLSelect("SELECT * FROM calendar_events WHERE IS_TASK=1 AND (IS_DONE=1 OR IS_REPEATING=1) AND TO_DAYS(NOW())-TO_DAYS(DONE_WHEN)<=1")  ;
    if ($recently_done) {
@@ -363,6 +412,7 @@ function usual(&$out) {
    }
   }
 
+ }
  }
 
 }
@@ -574,7 +624,17 @@ function usual(&$out) {
 * @access public
 */
  function delete_all_past_events() {
-  SQLExec("DELETE FROM calendar_events WHERE IS_TASK=0 and IS_REPEATING=0 and (TO_DAYS(NOW())-TO_DAYS(DUE))>1");
+$hl_ID=-1;
+$workdays_ID=-1;
+$rec=SQLSelectOne('select ID from calendar_categories where holidays=1');
+if ($rec) 
+ $hl_ID=$rec['ID'];
+
+$rec=SQLSelectOne('select ID from calendar_categories where workdays=1');
+if ($rec) 
+ $workdays_ID=$rec['ID'];
+
+  SQLExec("DELETE FROM calendar_events WHERE CALENDAR_CATEGORY_ID<>".$hl_ID." AND CALENDAR_CATEGORY_ID<>".$workdays_ID." AND IS_TASK=0 and IS_REPEATING=0 and (TO_DAYS(NOW())-TO_DAYS(DUE))>1");
  }
 
 /**
@@ -604,7 +664,82 @@ function usual(&$out) {
   @unlink(ROOT.'./cms/calendar/'.$rec['ICON']);
   SQLExec("DELETE FROM calendar_categories WHERE ID='".$rec['ID']."'");
  }
+
 /**
+* calendar_full
+*
+* @access public
+*/
+ function calendar_full(&$out,$m1=1,$m2=12) {
+  require(DIR_MODULES.$this->name.'/calendar_full.inc.php');
+ }
+/**
+* GetHolidays
+*
+* @access public
+*/
+ function calendar_getholidays() {
+$year=date('Y');
+
+$rec=SQLSelectOne('select ID from calendar_categories where holidays=1');
+if ($rec) {
+$hl_ID=$rec['ID'];
+//Удаляем все записи за текущий год из календаря
+//с категорией у которой стоит галочка Праздники
+SQLExec('delete from calendar_events where CALENDAR_CATEGORY_ID=' . $hl_ID . ' and Year(DUE)=' . $year);
+$rec=SQLSelectOne('select ID from calendar_categories where workdays=1');
+$workdays_ID=$rec['ID'];
+//Удаляем все записи за текущий год из календаря
+//с категорией у которой стоит галочка Праздники
+SQLExec('delete from calendar_events where CALENDAR_CATEGORY_ID=' . $workdays_ID . ' and Year(DUE)=' . $year);
+
+$calendar = simplexml_load_file('http://xmlcalendar.ru/data/ru/'.date('Y').'/calendar.xml');
+$hd=$calendar->holidays->holiday; 
+$calendar = $calendar->days->day;
+foreach( $hd as $hday ){
+    $id = (array)$hday->attributes()->id;
+    $id = $id[0]; 
+    $title = (array)$hday->attributes()->title;
+    $title = $title[0]; 
+    $holidays[$id]=$title;
+}
+
+//все праздники за текущий год
+foreach( $calendar as $day ){
+    $d = (array)$day->attributes()->d;
+    $d = $d[0];
+    //не считая короткие дни
+    if( $day->attributes()->t == 1 ) {
+     $h=$day->attributes()->h;
+     if (isset($holidays[(int)$h]))
+      $hd_name=$holidays[(int)$h];
+     else
+      $hd_name='Выходной день';
+//     $arHolidays[] = array('DAY'=>substr($d, 3, 2),'MONTH'=>substr($d, 0, 2),'HD_NAME'=>$hd_name);
+     $Record = Array();
+     $Record['DUE'] = $year . '-' . substr($d, 0, 2) . '-' . substr($d, 3, 2) ;
+     $Record['CALENDAR_CATEGORY_ID'] = $hl_ID;
+     $Record['TITLE'] = $hd_name;
+     $Record['ID']=SQLInsert('calendar_events', $Record);
+     
+    }
+    elseif ( $day->attributes()->t == 2 ) {
+//     $arWorkdays[]=array('DAY'=>substr($d, 3, 2),'MONTH'=>substr($d, 0, 2));
+     $Record = Array();
+     $Record['DUE'] = $year . substr($d, 0, 2) . substr($d, 3, 2) ;
+     $Record['CALENDAR_CATEGORY_ID'] = $workdays_ID;
+     $Record['TITLE'] = 'Перенесенный рабочий день';
+     $Record['ID']=SQLInsert('calendar_events', $Record);
+
+    }
+}
+ 
+}
+
+ }
+
+/**
+
 * Install
 *
 * Module installation routine
@@ -670,6 +805,11 @@ calendar_categories - Categories
  calendar_categories: ACTIVE int(255) NOT NULL DEFAULT '0'
  calendar_categories: PRIORITY int(10) NOT NULL DEFAULT '0'
  calendar_categories: ICON varchar(70) NOT NULL DEFAULT ''
+ calendar_categories: AT_CALENDAR tinyint(1) NOT NULL DEFAULT 0
+ calendar_categories: CALENDAR_COLOR int(11) NOT NULL DEFAULT 0
+ calendar_categories: HOLIDAYS tinyint(1) NOT NULL DEFAULT 0
+ calendar_categories: WORKDAYS tinyint(1) NOT NULL DEFAULT 0
+ 
 EOD;
   parent::dbInstall($data);
  }

@@ -7,6 +7,8 @@
    $out['CONTROLPANEL']=1;
   }
   $qry="1";
+
+
   // search filters
   //searching 'TITLE' (varchar)
   global $title;
