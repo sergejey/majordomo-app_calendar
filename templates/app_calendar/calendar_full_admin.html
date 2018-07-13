@@ -1,6 +1,6 @@
 <style>
 .calendar {
-    padding: 1px;
+
     width: 24px;
     margin:1px;
     display: inline-block;
@@ -15,106 +15,111 @@
 }
 
 .category1 {
-    border: 2px solid #5cb85c;
+    /* border: 2px solid #5cb85c;*/ 
+    box-shadow:0px 0px 0px 2px #5cb85c inset;
     border-radius: 50%;
 	cursor: help;
 }
 
 .category2 {
-    border: 2px solid #428bca;
+    /*border: 2px solid #428bca;*/ 
+    box-shadow:0px 0px 0px 2px #428bca inset;
     border-radius: 50%;
 	cursor: help;
 }
 
 .category3 {
-    border: 2px solid #555555;
+    /*border: 2px solid #555555;*/ 
+    box-shadow:0px 0px 0px 2px #555555 inset;
     border-radius: 50%;
 	cursor: help;
 }
 
 .category4 {
-    border: 2px solid #f0ad4e;
+    /*border: 2px solid #f0ad4e;*/ 
+    box-shadow:0px 0px 0px 2px #f0ad4e inset;
     border-radius: 50%;
 	cursor: help;
 }
 .category5 {
-    border: 2px solid #d9534f;
+    /*border: 2px solid #d9534f;*/ 
+    box-shadow:0px 0px 0px 2px #d9534f inset;
     border-radius: 50%;
 	cursor: help;
 }
 
 .category1.category2 {
-    border: 2px solid #5cb85c;
-    box-shadow: 0 0 0 2px #428bca;
+    /*border: 2px solid #5cb85c;*/
+    box-shadow: 0 0 0 2px #428bca ,inset 0px 0px 0px 4px  #5cb85c;
     border-radius: 50%;
 	cursor: help;
 }
 
 .category1.category3 {
-    border: 2px solid #5cb85c;
-    box-shadow: 0 0 0 2px #555555;
+    /*border: 2px solid #5cb85c;*/
+    box-shadow: 0 0 0 2px #555555 ,inset 0px 0px 0px 4px  #5cb85c;
     border-radius: 50%;
 	cursor: help;
 }
 
 .category1.category4 {
-    border: 2px solid #5cb85c;
-    box-shadow: 0 0 0 2px #f0ad4e;
+    /*border: 2px solid #5cb85c;*/
+    box-shadow: 0 0 0 2px #f0ad4e ,inset 0px 0px 0px 4px  #5cb85c;
     border-radius: 50%;
 	cursor: help;
 }
 
 .category1.category5 {
-    border: 2px solid #5cb85c;
-    box-shadow: 0 0 0 2px #d9534f;
+    /*border: 2px solid #5cb85c;*/
+    box-shadow: 0 0 0 2px #d9534f ,inset 0px 0px 0px 4px  #5cb85c;
     border-radius: 50%;
 	cursor: help;
 }
 
 .category2.category3 {
-    border: 2px solid #428bca;
-    box-shadow: 0 0 0 2px #555555;
+    /*border: 2px solid #428bca;*/
+    box-shadow: 0 0 0 2px #555555 ,inset 0px 0px 0px 4px  #428bca;
     border-radius: 50%;
 	cursor: help;
 }
 
 .category2.category4 {
-    border: 2px solid #428bca;
-    box-shadow: 0 0 0 2px #f0ad4e;
+    /*border: 2px solid #428bca;*/
+    box-shadow: 0 0 0 2px #f0ad4e ,inset 0px 0px 0px 4px  #428bca;
     border-radius: 50%;
 	cursor: help;
 }
 
 .category2.category5 {
-    border: 2px solid #428bca;
-    box-shadow: 0 0 0 2px #d9534f;
+    /*border: 2px solid #428bca;*/
+    box-shadow: inset 0px 0px 0px 2px #d9534f ,inset 0px 0px 0px 4px  #428bca;
     border-radius: 50%;
 	cursor: help;
 }
 
 .category3.category4 {
-    border: 2px solid #555555;
-    box-shadow: 0 0 0 2px #f0ad4e;
+    /*border: 2px solid #555555;*/
+    box-shadow: 0 0 0 2px #f0ad4e ,inset 0px 0px 0px 4px  #555555;
     border-radius: 50%;
 	cursor: help;
 }
 
 .category3.category5 {
-    border: 2px solid #555555;
-    box-shadow: 0 0 0 2px #d9534f;
+    /*border: 2px solid #555555;*/
+    box-shadow: 0 0 0 2px #d9534f,inset 0px 0px 0px 4px  #555555;
     border-radius: 50%;
 	cursor: help;
 }
 
 .category4.category5 {
-    border: 2px solid #f0ad4e;
-    box-shadow: 0 0 0 2px #d9534f;
+    /*border: 2px solid #f0ad4e;*/
+    box-shadow: 0 0 0 2px #d9534f,inset 0px 0px 0px 4px  #f0ad4e;
     border-radius: 50%;
 	cursor: help;
 }
 
 .calendar_hd {
-    padding: 1px;
+ 
     width: 24px;
     margin:1px;
     display: inline-block;
@@ -125,7 +130,7 @@
 }
 
 .calendar_we {
-    padding: 1px;
+ 
     width: 24px;
     margin: 1px;
     text-align: center;
@@ -137,7 +142,7 @@
 
 .calendar_week {
     margin-bottom: 10px;
-    padding: 1px;
+
     width: 24px;
     margin:1px;
     display: inline-block;
@@ -148,7 +153,7 @@
 }
 
 .calendar_grey {
-    padding: 1px;
+
     width: 24px;
     margin:1px;
     color: #b9b9b9;
@@ -169,8 +174,8 @@
 
 .month {
     [#if ONLY_CALENDAR=="1"#]
-	padding: 10px;
-    
+      padding: 10px;
+      width: 220px;
     [#else ONLY_CALENDAR#]
      padding: 10px;
      width: 220px;
