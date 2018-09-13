@@ -1,166 +1,105 @@
 <div id="panel_help" class="tab-pane active">
-        <br>
-<div class="panel-group" id="accordion">
-	<div class="panel panel-info">
-		<div class="panel-heading">
-                <div> Добавление календаря на текущий месяц в меню <b>&#091#module name="app_calendar" calendar="1" currentmonth="1" #&#093 </b></div>
-                <div> Добавление календаря с месяца mon1 по месяц mon2 в меню <b>&#091#module name="app_calendar" calendar="1" mon1="2" mon2="3" #&#093 </b> </div>
-		<a data-toggle="collapse" data-parent="#accordion" href="#events_help">Говорящий календарь</a>
-		</div>
-		<div class="panel-body collapse" id="events_help">
-        
-			<b>Код ниже добавьте в Сценарии</b><br><br>
-			if (file_exists('./modules/app_calendar/app_calendar.class.php'))
-			<br>
-			{
-			<br>
-			&nbsp; &nbsp; Define('TEMP_APP_CALENDAR_SOONLIMIT', '5'); //лимит дней которые проговаривает
-			<br>
-			&nbsp; &nbsp; include_once('./modules/app_calendar/app_calendar.class.php');
-			<br>
-			&nbsp; &nbsp; $calendar = new app_calendar();
-			<br>
-			&nbsp; &nbsp; $calendar -&gt; usual($out);
-			<br>
-			&nbsp; &nbsp; $events = $out['EVENTS_TODAY'];
-			<br>
-			&nbsp; &nbsp; $say_phrase = '';
-			<br>
-			&nbsp; &nbsp; if ($events)
-			<br>
-			&nbsp; &nbsp; {
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; $tasks = '';
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; $cals = '';
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; $i = 0;
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; $j = 0;
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; foreach($events as $ev)
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; {
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if ($ev['IS_TASK'] == 1 and $ev['IS_DONE'] == 0)
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $i++;
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $tasks.= $i.'. '.$ev['TITLE'].'. ';
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }&nbsp; else {
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $j++;
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $cals.= $j.'. '.$ev['TITLE'].'. ';
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; }
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; if ($i != 0) $say_phrase.= "У вас на сегодня запланированы задачи, ".$tasks;
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; if ($j != 0) $say_phrase.= "Сегодняшние события, ".$cals;
-			<br>
-			&nbsp; &nbsp; }
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; $events = $out['CALENDAR_CATEGORIES'];
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; $i = 0;
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; $tasks = '';
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; if ($events)
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; {
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; foreach($events as $category)
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $events_past = $category['EVENTS_PAST'];
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if ($events_past)
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $tasks.= 'из категории: '.$category['TITLE'].'. '; //Если нужно перед пропущенными задачами указывать категорию&nbsp; &nbsp;
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; foreach($events_past as $ev)
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $i++;
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $tasks.= $i.'. '.$ev['TITLE'].'. ';
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if ($i != 0) $say_phrase.= " Напоминаю пропущенные задачи, ".$tasks;
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; }
-			<br>
-			&nbsp; &nbsp; $events = $out['CALENDAR_CATEGORIES'];
-			<br>
-			&nbsp; &nbsp; $tasks = '';
-			<br>
-			&nbsp; &nbsp; $i = 0;
-			<br>
-			&nbsp; &nbsp; if ($events)
-			<br>
-			&nbsp; &nbsp; {
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; foreach($events as $category)
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; {
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $events_soon = $category['EVENTS_SOON'];
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if ($events_soon)
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; //$say_phrase.= ' в категории: '.$category['TITLE'].'. ';
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; foreach($events_soon as $ev)
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $i++;
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $tasks.= " через ".$ev['AGE']." ".$ev['DAYS']." ".$ev['TITLE'].". ";
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; }
-			<br>
-			&nbsp; &nbsp; &nbsp;if ($i != 0) $say_phrase.= "Напоминаю что".$tasks;
-			<br>
-			&nbsp; &nbsp; }
-			<br>
-			&nbsp; &nbsp; if ($say_phrase)
-			<br>
-			&nbsp; &nbsp; {
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; //echo $say_phrase;
-			<br>
-			&nbsp; &nbsp; &nbsp; &nbsp; say($say_phrase,3);
-			<br>
-			&nbsp; &nbsp; }
-			<br>
-			}
+    <br>
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#events_help1">Добавление календаря с месяца mon1 по месяц mon2 в меню</a></h4>
+            </div>
+            <div class="panel-body collapse" id="events_help1">
+                <b>&#091#module name="app_calendar" calendar="1" mon1="2" mon2="3" #&#093 </b>
+            </div>
+        </div>
 
-        <br>
-		</div>
-	</div>
-</div>
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#events_help2">Добавление календаря на текущий месяц в меню</a></h4>
+            </div>
+            <div class="panel-body collapse" id="events_help2">
+                <b>&#091#module name="app_calendar" calendar="1" currentmonth="1" #&#093 </b>
+            </div>
+        </div>
+
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#events_help3">Говорящий календарь</a></h4>
+            </div>
+            <div class="panel-body collapse" id="events_help3">
+
+                <b>Код ниже добавьте в Сценарии</b><br><br> if (file_exists('./modules/app_calendar/app_calendar.class.php'))
+                <br> {
+                <br> &nbsp; &nbsp; Define('TEMP_APP_CALENDAR_SOONLIMIT', '5'); //лимит дней которые проговаривает
+                <br> &nbsp; &nbsp; include_once('./modules/app_calendar/app_calendar.class.php');
+                <br> &nbsp; &nbsp; $calendar = new app_calendar();
+                <br> &nbsp; &nbsp; $calendar -&gt; usual($out);
+                <br> &nbsp; &nbsp; $events = $out['EVENTS_TODAY'];
+                <br> &nbsp; &nbsp; $say_phrase = '';
+                <br> &nbsp; &nbsp; if ($events)
+                <br> &nbsp; &nbsp; {
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; $tasks = '';
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; $cals = '';
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; $i = 0;
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; $j = 0;
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; foreach($events as $ev)
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; {
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if ($ev['IS_TASK'] == 1 and $ev['IS_DONE'] == 0)
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $i++;
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $tasks.= $i.'. '.$ev['TITLE'].'. ';
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }&nbsp; else {
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $j++;
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $cals.= $j.'. '.$ev['TITLE'].'. ';
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; }
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; if ($i != 0) $say_phrase.= "У вас на сегодня запланированы задачи, ".$tasks;
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; if ($j != 0) $say_phrase.= "Сегодняшние события, ".$cals;
+                <br> &nbsp; &nbsp; }
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; $events = $out['CALENDAR_CATEGORIES'];
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; $i = 0;
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; $tasks = '';
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; if ($events)
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; {
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; foreach($events as $category)
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $events_past = $category['EVENTS_PAST'];
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if ($events_past)
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $tasks.= 'из категории: '.$category['TITLE'].'. '; //Если нужно перед пропущенными задачами указывать категорию&nbsp; &nbsp;
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; foreach($events_past as $ev)
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $i++;
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $tasks.= $i.'. '.$ev['TITLE'].'. ';
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if ($i != 0) $say_phrase.= " Напоминаю пропущенные задачи, ".$tasks;
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; }
+                <br> &nbsp; &nbsp; $events = $out['CALENDAR_CATEGORIES'];
+                <br> &nbsp; &nbsp; $tasks = '';
+                <br> &nbsp; &nbsp; $i = 0;
+                <br> &nbsp; &nbsp; if ($events)
+                <br> &nbsp; &nbsp; {
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; foreach($events as $category)
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; {
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $events_soon = $category['EVENTS_SOON'];
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if ($events_soon)
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; //$say_phrase.= ' в категории: '.$category['TITLE'].'. ';
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; foreach($events_soon as $ev)
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $i++;
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $tasks.= " через ".$ev['AGE']." ".$ev['DAYS']." ".$ev['TITLE'].". ";
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; }
+                <br> &nbsp; &nbsp; &nbsp;if ($i != 0) $say_phrase.= "Напоминаю что".$tasks;
+                <br> &nbsp; &nbsp; }
+                <br> &nbsp; &nbsp; if ($say_phrase)
+                <br> &nbsp; &nbsp; {
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; //echo $say_phrase;
+                <br> &nbsp; &nbsp; &nbsp; &nbsp; say($say_phrase,3);
+                <br> &nbsp; &nbsp; }
+                <br> }
+                <br>
+            </div>
+        </div>
     </div>
-	
