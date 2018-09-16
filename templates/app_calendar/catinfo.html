@@ -3,19 +3,29 @@
     <div class="panel-group" id="accordion">
         <div class="panel panel-success">
             <div class="panel-heading">
-                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#events_help1">Добавление календаря с месяца mon1 по месяц mon2 в меню</a></h4>
+                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#events_help1">Добавление календаря в меню</a></h4>
             </div>
             <div class="panel-body collapse" id="events_help1">
-                <b>&#091#module name="app_calendar" calendar="1" mon1="2" mon2="3" #&#093 </b>
+			<b>Добавление календаря на текущий месяц в меню</b><br>
+			<code>&#091#module name="app_calendar" calendar="1" currentmonth="1" #&#093</code>
+			<br><br>
+			<b>Добавление календаря с месяца mon1 по месяц mon2</b><br>
+            <code>&#091#module name="app_calendar" calendar="1" mon1="2" mon2="3" #&#093</code>
             </div>
         </div>
 
         <div class="panel panel-success">
             <div class="panel-heading">
-                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#events_help2">Добавление календаря на текущий месяц в меню</a></h4>
+                <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#events_help2">Автозаполнения категории праздниками/перенесенными днями России</a></h4>
             </div>
             <div class="panel-body collapse" id="events_help2">
-                <b>&#091#module name="app_calendar" calendar="1" currentmonth="1" #&#093 </b>
+                <b>Добавить в какой-нибудь сценарий либо вызывать его вручную </b>
+				<br><br>
+				<code>
+				include_once('./modules/app_calendar/app_calendar.class.php');<br>
+				$calendar = new app_calendar();<br>
+				$calendar->calendar_getholidays();
+				</code>
             </div>
         </div>
 
@@ -25,7 +35,8 @@
             </div>
             <div class="panel-body collapse" id="events_help3">
 
-                <b>Код ниже добавьте в Сценарии</b><br><br> if (file_exists('./modules/app_calendar/app_calendar.class.php'))
+                <b>Код ниже добавьте в сценарий</b><br><br> 
+                <code>if (file_exists('./modules/app_calendar/app_calendar.class.php'))
                 <br> {
                 <br> &nbsp; &nbsp; Define('TEMP_APP_CALENDAR_SOONLIMIT', '5'); //лимит дней которые проговаривает
                 <br> &nbsp; &nbsp; include_once('./modules/app_calendar/app_calendar.class.php');
@@ -99,6 +110,7 @@
                 <br> &nbsp; &nbsp; &nbsp; &nbsp; say($say_phrase,3);
                 <br> &nbsp; &nbsp; }
                 <br> }
+                </code>
                 <br>
             </div>
         </div>
