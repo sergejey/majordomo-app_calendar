@@ -26,7 +26,7 @@ input[type=checkbox] {height: 15px;width: 15px;vertical-align: bottom;margin-top
 [#endif ONLY_CALENDAR#]
 
 [#if YEAR_CALENDAR==0#]
- <a href="?calendar=1&year_calendar=1" class="btn btn-default btn-sm" style="margin-top: 10px;"><span class="glyphicon glyphicon-calendar"></span> Календарь на год</a>
+ <div><a href="?calendar=1&year_calendar=1" class="btn btn-default btn-sm" style="margin-top: 10px;"><span class="glyphicon glyphicon-calendar"></span> Календарь на год</a></div>
 [#else#]
  <a onclick="javascript:history.back(); return false;" class="btn btn-default" style="font-weight: 600;width: 110px; display:block; margin-top: 10px;"><span class="	glyphicon glyphicon-hand-left"></span> Назад</a>
 [#endif YEAR_CALENDAR#]
