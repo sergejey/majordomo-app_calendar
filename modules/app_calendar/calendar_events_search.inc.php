@@ -45,7 +45,7 @@ if ($calendar_category_id!="") {
    }
    $session->data['calendar_events_sort']=$sortby_calendar_events;
   }
-  if (!$sortby_calendar_events) $sortby_calendar_events="DUE DESC";
+  if (!$sortby_calendar_events) $sortby_calendar_events="IS_NODATE DESC,DUE DESC";
   $out['SORTBY']=$sortby_calendar_events;
   // SEARCH RESULTS
   $res=SQLSelect("SELECT calendar_events.*,calendar_categories.TITLE as CATEGORY FROM calendar_events left join calendar_categories ON calendar_events.calendar_category_id=calendar_categories.id WHERE $qry ORDER BY ".$sortby_calendar_events);
@@ -55,7 +55,12 @@ if ($calendar_category_id!="") {
    $total=count($res);
    for($i=0;$i<$total;$i++) {
     // some action for every record if required
+    if ($res[$i]['IS_NODATE']==1) {
+     $res[$i]['DUE']='';
+    } else {
     $res[$i]['DUE']=fromDBDate($res[$i]['DUE']);
+    }
+
    }
    $out['RESULT']=$res;
   }
