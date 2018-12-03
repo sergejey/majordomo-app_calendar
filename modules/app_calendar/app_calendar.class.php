@@ -491,7 +491,7 @@ function usual(&$out) {
 
 
    global $is_nodate;
-   $rec['IS_NODATE']=(int)$rec['IS_NODATE'];
+   $rec['IS_NODATE']=(int)$is_nodate;
 
    global $user_id;
    $rec['USER_ID']=(int)$user_id;
