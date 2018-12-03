@@ -344,7 +344,7 @@ function usual(&$out) {
    foreach($events_past as $k=>$v) {
     $days=abs($v['AGE']);
     $days=GetNumberWord($days,array('день','дня','дней'));
-    
+    $v['AGE']=abs($v['AGE']);
     $v['DAYS']=$days;
     $calendar_categories[$k1]['EVENTS_PAST'][]=$v;
    }
