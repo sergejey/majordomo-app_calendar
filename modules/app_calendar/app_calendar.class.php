@@ -386,8 +386,13 @@ function usual(&$out) {
      //$new_events[]=$ev;
      if ($ev['AGE']) {
       $days=abs($ev['AGE']);
-      $days=GetNumberWord($days,array('день','дня','дней'));
-      $ev['DAYS']=$days;   
+      if ($days==1) {
+       $ev['DAYS']='завтра';
+      } else if ($days==2) {
+       $ev['DAYS']='послезавтра';
+      } else {
+       $ev['DAYS']='через ' . $days . ' ' . GetNumberWord($days,array('день','дня','дней'));
+      }   
      } 
      $calendar_categories[$k1]['EVENTS_SOON'][]=$ev;
     }
