@@ -728,7 +728,7 @@ foreach( $calendar as $day ){
      $Record['ID']=SQLInsert('calendar_events', $Record);
      
     }
-    elseif ( $day->attributes()->t == 2 ) {
+    elseif ( $day->attributes()->t ==3 ) {
 //     $arWorkdays[]=array('DAY'=>substr($d, 3, 2),'MONTH'=>substr($d, 0, 2));
      $Record = Array();
      $Record['DUE'] = $year . substr($d, 0, 2) . substr($d, 3, 2) ;
