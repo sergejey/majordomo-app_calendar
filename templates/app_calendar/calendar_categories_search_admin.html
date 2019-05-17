@@ -74,7 +74,6 @@
 </script>
 
 <script language="javascript">
-
 function SaveColor(selectObject,category_id)
   {
   var url="calendar_color=";
@@ -115,8 +114,27 @@ function SaveColor(selectObject,category_id)
 }
 </script>
 
+<style>
+.info { 
+ padding: 10px;
+ border: 1px dashed #000;
+ display: inline-block;
+ border-radius: 5px;
+ background: #f8f8ff;
+}
+.form-control { 
+ -webkit-appearance: none;
+ -moz-appearance: none;
+ -ms-appearance: none;
+ appearance: none !important;
+ box-shadow: none !important;
+}
+#tooltip { border-bottom: 1px dashed #000; }
+.table tbody>tr>td { vertical-align: middle; }
+</style>
+
 <br>
-<a href="?view_mode=edit_calendar_categories&data_source=<#DATA_SOURCE#>" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i> <#LANG_ADD_NEW_RECORD#></a>
+<a href="?view_mode=edit_calendar_categories&data_source=<#DATA_SOURCE#>" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i> Добавить категорию</a>
 
 <br><br>
 
@@ -133,17 +151,20 @@ $('#tooltip').ready(function(){
 $('[data-toggle="tooltip"]').tooltip();
 });
 </script>
-<th style="width: 80px;">Иконка</th><th>Категория</th><th style="width: 60px;"><span id="tooltip" style="border-bottom: 1px dashed #000;" data-toggle="tooltip" title="Выделить дату в Календаре на год">Выделить</span></th><th>Выбор цвета рамки</th><th>Праздники</th><th>Рабочие</th><th>Опции</th>
+<th class="text-center">Иконка</th><th>Категория</th><th class="text-center"><span id="tooltip" data-toggle="tooltip" title="Отмеченной галочкой категории в которых хранятся праздники, являющиеся выходными">Праздники</span></th><th class="text-center"><span id="tooltip" data-toggle="tooltip" title="Отмечайте категории галочкой в которых хранятся выходные, на которые перенесены рабочие дни">Рабочие</span></th><th></th><th class="text-center"><span id="tooltip" data-toggle="tooltip" title="Выделить дату в Календаре на год">Выделить рамкой</span></th><th class="text-center"><span id="tooltip" data-toggle="tooltip" title="Цвет рамки в Календаре на год">Цвет рамки</span></th><th class="text-center">Опции</th>
 </tr>
 [#begin RESULT#]
 <tr>
-<td>[#if ICON!=""#]<img style="width: 30px;" src="<#ROOTHTML#>cms/calendar/[#ICON#]">[#else#]<img style="width: 30px;" src="<#ROOTHTML#>img/no_photo.gif">[#endif ICON#]</td>
+<td align="center">[#if ICON!=""#]<img style="width: 30px;" src="<#ROOTHTML#>cms/calendar/[#ICON#]">[#else#]<img style="width: 30px;" src="../cms/calendar/no_photo.gif">[#endif ICON#]</td>
  <td>
   <b>[#TITLE#]</b>
  </td>
-<td><input type="checkbox" name="atcalendar[#ID#]" class="checkbox at_calendar" value="[#ID#]" [#if AT_CALENDAR==1#] checked [#endif AT_CALENDAR#]></td>
-<td><select name="color[#ID#]" class="form-control calendar_color" value="[#CALENDAR_COLOR#]" onchange="SaveColor(this,[#ID#])" style="width: 170px; background-color: [#if CALENDAR_COLOR==0#]#FFFFFF[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==1#]#5cb85c[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==2#]#428bca[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==3#]#555555[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==4#]#f0ad4e[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==5#]#d9534f[#endif CALENDAR_COLOR#]">
- <option value="0" [#if CALENDAR_COLOR==0#] selected [#endif CALENDAR_COLOR#]>Выбрать цвет</option>
+<td align="center"><input type="checkbox" name="holidays[#ID#]" class="checkbox holidays" value="[#ID#]" [#if HOLIDAYS==1#] checked [#endif HOLIDAYS#]></td>
+<td align="center"><input type="checkbox" name="workdays[#ID#]" class="checkbox workdays" value="[#ID#]" [#if WORKDAYS==1#] checked [#endif WORKDAYS#]></td>
+<td width="150"></td>
+<td align="center"><input type="checkbox" name="atcalendar[#ID#]" class="checkbox at_calendar" value="[#ID#]" [#if AT_CALENDAR==1#] checked [#endif AT_CALENDAR#]></td>
+<td align="center"><select name="color[#ID#]" class="form-control calendar_color" value="[#CALENDAR_COLOR#]" onchange="SaveColor(this,[#ID#])" style="width: 40px; background-color: [#if CALENDAR_COLOR==0#]#FFFFFF[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==1#]#5cb85c[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==2#]#428bca[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==3#]#555555[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==4#]#f0ad4e[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==5#]#d9534f[#endif CALENDAR_COLOR#]">
+ <option value="0" style="background-color: #ffffff" [#if CALENDAR_COLOR==0#] selected [#endif CALENDAR_COLOR#]></option>
  <option value="1" style="background-color: #5cb85c" [#if CALENDAR_COLOR==1#] selected [#endif CALENDAR_COLOR#]> </option>
  <option value="2" style="background-color: #428bca" [#if CALENDAR_COLOR==2#] selected [#endif CALENDAR_COLOR#]> </option>
  <option value="3" style="background-color: #555555" [#if CALENDAR_COLOR==3#] selected [#endif CALENDAR_COLOR#]> </option>
@@ -151,10 +172,7 @@ $('[data-toggle="tooltip"]').tooltip();
  <option value="5" style="background-color: #d9534f" [#if CALENDAR_COLOR==5#] selected [#endif CALENDAR_COLOR#]> </option>
 </select>
 </td>
-<td><input type="checkbox" name="holidays[#ID#]" class="checkbox holidays" value="[#ID#]" [#if HOLIDAYS==1#] checked [#endif HOLIDAYS#]></td>
-<td><input type="checkbox" name="workdays[#ID#]" class="checkbox workdays" value="[#ID#]" [#if WORKDAYS==1#] checked [#endif WORKDAYS#]></td>
-
- <td width="200">
+<td width="150" align="center">
  
   [#if "<#ACTION#>"=="admin"#]
   
@@ -173,13 +191,12 @@ $('[data-toggle="tooltip"]').tooltip();
 [#end RESULT#]
 </table>
 
-<style>
-.info {color: #8C3D02;}
-</style>
+<div class="info">
+В категории отмеченной галочкой <b>Праздники</b> хранятся праздники, являющиеся выходными<br>
+В категории отмеченной галочкой <b>Рабочие</b> хранятся выходные, на которые перенесены рабочие дни<br>
+Категории отмеченные галочкой <b>Выделить рамкой</b> отмечаются на календаре цветом, выбранном в графе <b>Цвет рамки</b>
+</div>
 
-<div class="info">В категории отмеченной галочкой Праздники хранятся праздники, являющиеся выходными </div>
-<div class="info">В категории отмеченной галочкой Рабочие хранятся выходные, на которые перенесены рабочие дни</div>
-<div class="info">Категории отмеченные галочкой Выделить отмечаются на календаре цветом, выбранном в графе Выбор цвета рамки</div>
 <input type="hidden" name="data_source" value="<#DATA_SOURCE#>">
 <input type="hidden" name="view_mode" value="multiple_calendar_categories">
 </form>
