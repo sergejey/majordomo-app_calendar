@@ -58,7 +58,12 @@ if ($calendar_category_id!="") {
     if ($res[$i]['IS_NODATE']==1) {
      $res[$i]['DUE']='';
     } else {
-    $res[$i]['DUE']=fromDBDate($res[$i]['DUE']);
+    $tmp = explode('-', $res[$i]['DUE']);
+      
+	$str = str_pad($tmp[2], 2, "0", STR_PAD_LEFT) . '.';
+	$str.= str_pad($tmp[1], 2, "0", STR_PAD_LEFT) . '.';
+	$str.= str_pad($tmp[0], 2, "0", STR_PAD_LEFT);
+	$res[$i]['DUE']=$str;
     }
 
    }
