@@ -1,29 +1,4 @@
 <script language="javascript">
- $('.at_calendar').click (function ()
-  {
-  var thisCheck = $(this);
-  if (thisCheck.is(':checked')) {
-   var url="at_calendar=1&id=";
-   url=url+thisCheck.val();
-  } else {
-   var url="at_calendar=0&calendar_color=0&id=";
-   url=url+thisCheck.val();
-  }
-  url= "/modules/app_calendar/calendar_update.php?" + url;
-  $.ajax({
-   url: url,
-   cache: false,
-   success: function(html){
-
-  }
-});
-
-
- }
- );
-</script>
-
-<script language="javascript">
  $('.workdays').click (function ()
   {
   var thisCheck = $(this);
@@ -79,6 +54,12 @@ function SaveColor(selectObject,category_id)
   var url="calendar_color=";
   url=url+selectObject.value;
   url=url+"&id="+ category_id;
+  if (selectObject.value=="0") {
+   url=url+"&at_calendar=0";
+  }
+  else {
+   url=url+"&at_calendar=1";
+  }
   url= "/modules/app_calendar/calendar_update.php?" + url;
   
 
@@ -151,18 +132,11 @@ $('#tooltip').ready(function(){
 $('[data-toggle="tooltip"]').tooltip();
 });
 </script>
-<th class="text-center">Иконка</th><th>Категория</th><th class="text-center"><span id="tooltip" data-toggle="tooltip" title="Отмеченной галочкой категории в которых хранятся праздники, являющиеся выходными">Праздники</span></th><th class="text-center"><span id="tooltip" data-toggle="tooltip" title="Отмечайте категории галочкой в которых хранятся выходные, на которые перенесены рабочие дни">Рабочие</span></th><th></th><th class="text-center"><span id="tooltip" data-toggle="tooltip" title="Выделить дату в Календаре на год">Выделить рамкой</span></th><th class="text-center"><span id="tooltip" data-toggle="tooltip" title="Цвет рамки в Календаре на год">Цвет рамки</span></th><th class="text-center">Опции</th>
+<th class="text-center" style="width: 100px;">Иконка</th><th style="width: 100px;" class="text-center"><span id="tooltip" data-toggle="tooltip" title="Цвет рамки в Календаре на год">Цвет рамки</span></th><th>Категория</th><th style="width: 8%;" class="text-center"><span id="tooltip" data-toggle="tooltip" title="Отмеченной галочкой категории в которых хранятся праздники, являющиеся выходными">Праздники</span></th><th style="width: 8%;" class="text-center"><span id="tooltip" data-toggle="tooltip" title="Отмечайте категории галочкой в которых хранятся выходные, на которые перенесены рабочие дни">Рабочие</span></th><th class="text-center">Опции</th>
 </tr>
 [#begin RESULT#]
 <tr>
-<td align="center">[#if ICON!=""#]<img style="width: 30px;" src="<#ROOTHTML#>cms/calendar/[#ICON#]">[#else#]<img style="width: 30px;" src="../cms/calendar/no_photo.gif">[#endif ICON#]</td>
- <td>
-  <b>[#TITLE#]</b>
- </td>
-<td align="center"><input type="checkbox" name="holidays[#ID#]" class="checkbox holidays" value="[#ID#]" [#if HOLIDAYS==1#] checked [#endif HOLIDAYS#]></td>
-<td align="center"><input type="checkbox" name="workdays[#ID#]" class="checkbox workdays" value="[#ID#]" [#if WORKDAYS==1#] checked [#endif WORKDAYS#]></td>
-<td width="150"></td>
-<td align="center"><input type="checkbox" name="atcalendar[#ID#]" class="checkbox at_calendar" value="[#ID#]" [#if AT_CALENDAR==1#] checked [#endif AT_CALENDAR#]></td>
+<td align="center">[#if ICON!=""#]<img style="max-height: 35px; width: 30px;" src="<#ROOTHTML#>cms/calendar/[#ICON#]">[#else#]<img style="width: 30px;" src="../cms/calendar/no_photo.gif">[#endif ICON#]</td>
 <td align="center"><select name="color[#ID#]" class="form-control calendar_color" value="[#CALENDAR_COLOR#]" onchange="SaveColor(this,[#ID#])" style="width: 40px; background-color: [#if CALENDAR_COLOR==0#]#FFFFFF[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==1#]#5cb85c[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==2#]#428bca[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==3#]#555555[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==4#]#f0ad4e[#endif CALENDAR_COLOR#][#if CALENDAR_COLOR==5#]#d9534f[#endif CALENDAR_COLOR#]">
  <option value="0" style="background-color: #ffffff" [#if CALENDAR_COLOR==0#] selected [#endif CALENDAR_COLOR#]></option>
  <option value="1" style="background-color: #5cb85c" [#if CALENDAR_COLOR==1#] selected [#endif CALENDAR_COLOR#]> </option>
@@ -172,6 +146,9 @@ $('[data-toggle="tooltip"]').tooltip();
  <option value="5" style="background-color: #d9534f" [#if CALENDAR_COLOR==5#] selected [#endif CALENDAR_COLOR#]> </option>
 </select>
 </td>
+<td><b>[#TITLE#]</b></td>
+<td align="center"><input type="checkbox" name="holidays[#ID#]" class="checkbox holidays" value="[#ID#]" [#if HOLIDAYS==1#] checked [#endif HOLIDAYS#]></td>
+<td align="center"><input type="checkbox" name="workdays[#ID#]" class="checkbox workdays" value="[#ID#]" [#if WORKDAYS==1#] checked [#endif WORKDAYS#]></td>
 <td width="150" align="center">
  
   [#if "<#ACTION#>"=="admin"#]
@@ -194,7 +171,6 @@ $('[data-toggle="tooltip"]').tooltip();
 <div class="info">
 В категории отмеченной галочкой <b>Праздники</b> хранятся праздники, являющиеся выходными<br>
 В категории отмеченной галочкой <b>Рабочие</b> хранятся выходные, на которые перенесены рабочие дни<br>
-Категории отмеченные галочкой <b>Выделить рамкой</b> отмечаются на календаре цветом, выбранном в графе <b>Цвет рамки</b>
 </div>
 
 <input type="hidden" name="data_source" value="<#DATA_SOURCE#>">
