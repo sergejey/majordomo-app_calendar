@@ -167,6 +167,7 @@ function run() {
      $rec['TITLE']=$v['TITLE'];
      $rec['TYPE']=$v['TYPE'];
      $rec['DATA']=$v['DATA'];
+     $rec['NOTES'] = '';
      $rec['ID']=SQLInsert('settings', $rec);
      Define('SETTINGS_'.$rec['NAME'], $v['DEFAULT']);
     }
